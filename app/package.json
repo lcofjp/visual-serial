@@ -1,0 +1,26 @@
+{
+  "name": "visual-serial",
+  "version": "1.0.0",
+  "description": "a tool for anlys serial communication data",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lcofjp/visual-serial.git"
+  },
+  "keywords": [
+    "serial"
+  ],
+  "author": "lcofjp@163.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lcofjp/visual-serial/issues"
+  },
+  "homepage": "https://github.com/lcofjp/visual-serial#readme",
+  "devDependencies": {
+    "electron": "^1.7.6"
+  }
+}
