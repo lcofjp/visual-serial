@@ -21,6 +21,14 @@
   },
   "homepage": "https://github.com/lcofjp/visual-serial#readme",
   "devDependencies": {
-    "electron": "^1.7.6"
+    "electron": "^1.7.6",
+    "electron-rebuild": "^1.6.0"
+  },
+  "dependencies": {
+    "bootstrap": "^4.0.0-beta",
+    "jquery": "^3.2.1",
+    "lodash": "^4.17.4",
+    "serialport": "^5.0.0",
+    "titlebar": "^1.4.0"
   }
 }
