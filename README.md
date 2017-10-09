@@ -2,7 +2,7 @@
 ## 如何运行最新版最新版软件
 
 ### 1. 安装Node.js
-下载地址：[https://nodejs.org/en/](https://nodejs.org/en/)
+下载地址：[https://nodejs.org/](https://nodejs.org/)
 
 ### 2. 克隆代码到本地
 使用Git方式或者https方式克隆代码：
