@@ -21,3 +21,7 @@
 * 切换到`visual-serial/app`目录
 * 执行命令：`npm start`
 
+--------------------
+
+### 致谢：
+* 感谢[strong161](http://home.eeworld.com.cn/space-uid-631109.html)网友为本项目捐赠30E金币
