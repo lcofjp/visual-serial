@@ -1,5 +1,9 @@
+## 如何调试
+运行软件，通过快捷键打开调试窗口(windows/linux: <kbd>ctrl+shift+i</kbd>,macOS: <kbd>command+option+i</kbd>)
 
-## 如何运行最新版最新版软件
+
+
+## 如何从代码运行软件
 
 ### 1. 安装Node.js
 下载地址：[https://nodejs.org/](https://nodejs.org/)

@@ -186,6 +186,28 @@ function basicSetupInit() {
   basicSetupEventInit();
 }
 
+function wrapFunc(func, next) {
+  return function (data, devObj) {
+    func(data, devObj, next);
+  }
+}
+function makeSeq(seq) {
+  let next = () => {};
+  if (Array.isArray(seq)) {
+    for(let i=seq.length-1; i >= 0; i--) {
+      next = wrapFunc(seq[i], next);
+    }
+  }
+  return next;
+}
+
+function display(data, devObj, next) {
+
+}
+display.format = "item";
+
+
+var shandle = makeSeq([m1, m2, m3, m1, m1]);
 // window / document 全局事件
 document.addEventListener('DOMContentLoaded', function () {
   $('.titlebar-close').click(e=>{
@@ -193,6 +215,7 @@ document.addEventListener('DOMContentLoaded', function () {
   });
   rxTextArea = document.querySelector('#rx-content > textarea');
   basicSetupInit();
+  shandle([1,2,3,4,5], null);
 });
 
 
