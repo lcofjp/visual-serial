@@ -14,6 +14,9 @@
 //   win.loadURL(modalPath)
 //   win.show()
 // })
+const path = require('path');
+const fs = require('fs');
+
 const $ = require('jquery');
 const SerialPort = require('serialport');
 const _ = require('lodash/fp');
@@ -50,13 +53,16 @@ menu.append(new MenuItem({
 let serial = null; // 串口实例
 const dataObj = {
   buffer: null,
-  rawStrForHtml: '',
-  hexStr: '',
-  items: {},
+  rawHex: '',
+  rawStr: '',
+  protocolHex: '',
+  protocolStr: '',
+  itemCnt: 0,
   totalRxCnt: 0,
 }
 const hexTab = "0123456789ABCDEF";
 let rxTextArea;
+let rxHandlerPre;
 
 // 初始化基本设置栏
 const basicSetupSelectors = ['baudrate-select', 'databits-select', 'stopbits-select', 'parity-select', 'flowcontrol-select'];
@@ -155,20 +161,14 @@ function handleOpenClick(e) {
       $btn.prop('disabled', false);
       serial = null;
     });
+    var makeFF = require('./middleware/FF-protocal.js');
+    
+    rxHandlerPre = makeSeq([makeFF().decode,display]);
   }
 }
-function byteToHex(b) {
-  return hexTab[(b&0xF0)>>4] + hexTab[b&0xF];
-}
+
 function handleSerialRecieveData(buf) {
-  const u8a = new Uint8Array(buf);
-  dataObj.totalRxCnt += buf.byteLength;
-  for(const b of buf) {
-    dataObj.hexStr += ' ' + byteToHex(b);
-  }
-  rxTextArea.innerHTML = dataObj.hexStr;
-  rxTextArea.scrollTop = rxTextArea.scrollHeight;
-  $('#tx-content > textarea').html(`${dataObj.totalRxCnt}`);
+  rxHandlerPre(buf, serial);
 }
 function handleSerialError(err) {
   console.log('handleSerialError: ', err);
@@ -201,22 +201,117 @@ function makeSeq(seq) {
   return next;
 }
 
-function display(data, devObj, next) {
-
+function byteToHex(b) {
+  return hexTab[(b&0xF0)>>4] + hexTab[b&0xF];
 }
-display.format = "item";
+function display(buf, devObj, next) {
+  let i;
+  if (display.format === 'RAW-HEX') {
+    for(i=0; i < buf.length; i++) {
+      dataObj.rawHex += byteToHex(buf[i]);
+      dataObj.rawHex += ' ';
+    }
+    if (dataObj.rawHex.length > 2 * 1024 * 1024) {
+      dataObj.rawHex = dataObj.rawHex.slice(1*1024*1024);
+    }
+    rxTextArea.innerHTML = dataObj.rawHex;
+    rxTextArea.scrollTop = rxTextArea.scrollHeight;
+  } else if (display.format === 'RAW-STRING') {
+    rxTextArea.scrollTop = rxTextArea.scrollHeight;
+  } else if (display.format === 'PROTOCOL-HEX') {
+    let str = '';
+    for(i=0; i < buf.length; i++) {
+      str += byteToHex(buf[i]);
+      str += ' ';
+    }
+    if (dataObj.itemCnt < 1000) {
+      var p = document.createElement('p');
+      p.innerHTML = str;
+      $('#display-list').append(p);
+      dataObj.itemCnt += 1;
+    } else { 
+      var list = document.getElementById('display-list');
+      $("p:first", list).detach().html(str).appendTo(list);
+    }
+    var area = $('#display-list')[0];
+    area.scrollTop = area.scrollHeight;
+  } else if (display.format === 'PROTOCAL-STRING') {
+    var area = $('#display-list')[0];
+    area.scrollTop = area.scrollHeight;
+  }
+  
+  $('#tx-content textarea').html(`${dataObj.itemCnt}`);
+  next(buf, devObj);
+}
+display.format = 'RAW-HEX';
 
+function DOMEventInit() {
+  // display format change event
+  $('#display-format-select').change(function(e) {
+    display.format = $(this).val();
+    // console.log(display.format);
+    if (display.format.substring(0, 3) !== 'RAW') {
+      $('#textarea-rx').hide();
+      $('#display-list').show();
+    } else {
+      $('#display-list').hide();
+      $('#textarea-rx').show();
+    }
+  });
+  // window resize event
+  window.addEventListener('resize', function(e) {
+    let height = window.innerHeight - 160 - 24 - 10-44;
+    $('#rx-display-area').css('height', height);
+  });
+  // 中间件的mouse事件
+  $('.middleware-line').mouseover((e)=>{
+    $(e.currentTarget).children('span').show();
+  });
+  $('.middleware-line').mouseout((e)=>{
+    $(e.currentTarget).children('span').hide();
+  });
+  // 中间件上移、下移、删除
+  $('.middleware-line').click((e) => {
+    let $target = $(e.target);
+    let nextLine = e.currentTarget.nextElementSibling;
+    if (e.target.tagName === 'SPAN') {
+      if ($target.hasClass('icon-down-circled')) { // 下移
+        let next = e.currentTarget.nextElementSibling;
+        next && $(e.currentTarget).detach().insertAfter(next);
+      } else if ($target.hasClass('icon-up-circled')) { // 上移
+        let pre = e.currentTarget.previousElementSibling;
+        pre && $(e.currentTarget).detach().insertBefore(pre);
+      } else if ($target.hasClass('icon-cancel-squared')) { // 删除
+        $(e.currentTarget).detach();
+      }
+    }
+  });
+  // 中间件添加按钮
+  $('.add-middleware').click((e)=>{
+    const target = e.target;
+    const name = target.dataset['name'];
+    $('#shadow-mask').css('display', 'flex');
+    $('#middleware-popup').css('display', 'flex');
+  });
+  // 弹出框按钮处理程序
+  $('#middleware-popup .cancel').click(e => {
+    $('#shadow-mask').hide();
+    $('#middleware-popup').hide();
+  })
+}
 
-var shandle = makeSeq([m1, m2, m3, m1, m1]);
 // window / document 全局事件
 document.addEventListener('DOMContentLoaded', function () {
   $('.titlebar-close').click(e=>{
     window.close();
   });
-  rxTextArea = document.querySelector('#rx-content > textarea');
+  rxTextArea = document.querySelector('#textarea-rx');
   basicSetupInit();
-  shandle([1,2,3,4,5], null);
+  DOMEventInit();
+  let height = window.innerHeight - 160 - 24 - 10 - 44;
+  $('#rx-display-area').css('height', height);
 });
+
 
 
 

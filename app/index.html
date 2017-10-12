@@ -17,7 +17,7 @@
 
 <body>
   <div class="titlebar">
-    <div class="titlebar-stoplight">
+    <!-- <div class="titlebar-stoplight">
       <div class="titlebar-close">
         <svg x="0px" y="0px" viewBox="0 0 6.4 6.4">
           <polygon fill="#4d0000" points="6.4,0.8 5.6,0 3.2,2.4 0.8,0 0,0.8 2.4,3.2 0,5.6 0.8,6.4 3.2,4 5.6,6.4 6.4,5.6 4,3.2"></polygon>
@@ -37,7 +37,7 @@
           <polygon fill="#006400" points="7.9,4.5 7.9,3.4 4.5,3.4 4.5,0 3.4,0 3.4,3.4 0,3.4 0,4.5 3.4,4.5 3.4,7.9 4.5,7.9 4.5,4.5"></polygon>
         </svg>
       </div>
-    </div>
+    </div> -->
   </div>
   <div id="sidebar">
     <fieldset>
@@ -48,7 +48,7 @@
         <div class="column1">数据位：</div><select id="databits-select" class="column2"></select>
         <div class="column1">停止位：</div><select id="stopbits-select" class="column2"><option>8</option></select>
         <div class="column1">校验位：</div><select id="parity-select" class="column2"><option>1</option></select>
-        <div class="column1">控制流：</div><select id="flowcontrol-select" class="column2"><option>无</option></select>
+        <div class="column1">流控制：</div><select id="flowcontrol-select" class="column2"><option>无</option></select>
         <button id="open-device" class="btn btn-mini btn-default">打开</button>
       </div>
     </fieldset>
@@ -74,7 +74,7 @@
           <span class="icon icon-cancel-squared"></span>
         </div>
       </div>
-      <button class="btn btn-mini btn-primary">Add</button>
+      <button class="btn btn-mini btn-primary add-middleware" data-name="pre-middleware">Add</button>
     </fieldset>
     <fieldset class="after-middleware-fs">
       <legend>后置中间件</legend>
@@ -86,7 +86,7 @@
           <span class="icon icon-cancel-squared"></span>
         </div>
       </div>
-      <button class="btn btn-mini btn-primary">Add</button>
+      <button class="btn btn-mini btn-primary add-middleware" data-name="after-middleware">Add</button>
     </fieldset>
     <fieldset class="send-middleware-fs">
       <legend>发送中间件</legend>
@@ -104,7 +104,7 @@
           <span class="icon icon-cancel-squared"></span>
         </div>
       </div>
-      <button class="btn btn-mini btn-primary">Add</button>
+      <button class="btn btn-mini btn-primary add-middleware" data-name="send-middleware">Add</button>
     </fieldset>
   </div>
 
@@ -112,13 +112,18 @@
     <div id="rx-region">
       <div>接收区</div>
       <div id="rx-content">
-        <textarea placeholder="empty, no data yet."></textarea>
+        <div id="rx-display-area">
+          <textarea id="textarea-rx" placeholder="empty, no data yet."></textarea>
+          <div id="display-list" style="display: none;">
+          </div>
+        </div>
         <div id="rx-display-setup">
           <label for="display-format-select">显示方式:</label>
           <select id="display-format-select">
-            <option>按协议显示</option>
-            <option>十六进制</option>
-            <option>字符串</option>
+            <option>PROTOCOL-HEX</option>
+            <option>PROTOCOL-STRING</option>
+            <option selected>RAW-HEX</option>
+            <option>RAW-STRING</option>
           </select>
           <button class="btn btn-mini btn-default">清空</button>
         </div>
@@ -135,13 +140,30 @@
         <label><input type="checkbox" id="append-linefeed" />末尾加0x0A(\n)</label>
         <label><input type="checkbox" id="send-hex" />十六进制</label>
         <label><input type="checkbox" id="send-decimal" />十进制</label>
-        <label><input type="checkbox" id="send-by-script" />脚本</label>
+        <label><input type="checkbox" id="send-by-script" disabled />脚本</label>
       </div>
     </div>
   </div>
 
   <footer class="toolbar toolbar-footer"><h1 class="title">status</h1></footer>
 
+  <div id="shadow-mask">
+    <div id="middleware-popup" class="popup">
+      <div class="header"><p class="title">middleware select</p></div>
+      <div class="content">content</div>
+      <div class="footer">
+        <button class="btn btn-default cancel">Cancel</button>
+        <button class="btn btn-primary ok">OK</button>
+      </div>
+    </div>
+    <div id="message-popup" class="popup" style="display: none;">
+      <div class="header"><p class="title">Message</p></div>
+      <div class="content">content</div>
+      <div class="footer">
+        <button class="btn btn-primary ok">OK</button>
+      </div>
+    </div>
+  </div>
 </body>
 
 </html>
