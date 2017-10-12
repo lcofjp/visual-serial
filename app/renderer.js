@@ -132,6 +132,7 @@ function getBasicOptions() {
   }
   return options;
 }
+// 打开/关闭串口操作
 function handleOpenClick(e) {
   const $btn = $(e.target);
   $btn.prop('disabled', true);
@@ -161,7 +162,7 @@ function handleOpenClick(e) {
       $btn.prop('disabled', false);
       serial = null;
     });
-    var makeFF = require('./middleware/FF-protocal.js');
+    var makeFF = require('./middleware/FF-protocol.js');
     
     rxHandlerPre = makeSeq([makeFF().decode,display]);
   }
@@ -171,7 +172,7 @@ function handleSerialRecieveData(buf) {
   rxHandlerPre(buf, serial);
 }
 function handleSerialError(err) {
-  console.log('handleSerialError: ', err);
+  showMessage('Error', err.message);
 }
 // 基本设置栏 事件处理初始化
 function basicSetupEventInit() {
@@ -185,12 +186,13 @@ function basicSetupInit() {
   basicSetupFormInit();
   basicSetupEventInit();
 }
-
+// 中间件包装函数
 function wrapFunc(func, next) {
   return function (data, devObj) {
     func(data, devObj, next);
   }
 }
+// 中间件连接函数
 function makeSeq(seq) {
   let next = () => {};
   if (Array.isArray(seq)) {
@@ -204,6 +206,7 @@ function makeSeq(seq) {
 function byteToHex(b) {
   return hexTab[(b&0xF0)>>4] + hexTab[b&0xF];
 }
+// display中间件
 function display(buf, devObj, next) {
   let i;
   if (display.format === 'RAW-HEX') {
@@ -312,6 +315,41 @@ document.addEventListener('DOMContentLoaded', function () {
   $('#rx-display-area').css('height', height);
 });
 
+// 消息提示
+function showMessage(title='Message', content='') {
+  $('#shadow-mask').css('display', 'flex');
+  $('#message-popup .title').html(_.escape(title));
+  $('#message-popup .content').html(_.escape(content));
+  $('#message-popup').css('display', 'flex');
+  $('#message-popup button').click(e => {
+    $('#shadow-mask').hide();
+    $('#message-popup').hide();
+  });
+}
 
-
-
+// 扫描midlleware文件夹，返回其中的js文件和文件夹
+function scanMiddlewareDir(dirname) {
+  if (fs.existsSync(dirname)) {
+    const files = fs.readdirSync(dirname);
+    return _(files).filter(v => {
+      const stats = fs.statSync(path.join(dirname, v));
+      if (stats.isDirectory()) {
+        return true;
+      } else {
+        if (path.extname(v).toLowerCase() === '.js') {
+          return true;
+        }
+      }
+      return false;
+    }).map(v => {
+      const stats = fs.statSync(path.join(dirname, v));
+      if (stats.isFile()) {
+        return {type: 'js', name: v};
+      } else if (stats.isDirectory()) {
+        return {type: 'dir', name: v};
+      }
+    }).value();
+  } else {
+    return [];
+  }
+}
