@@ -20,34 +20,28 @@ const fs = require('fs');
 const $ = require('jquery');
 const SerialPort = require('serialport');
 const _ = require('lodash/fp');
+const cuid = require('cuid');
 var remote = require('electron').remote;
 var Menu = remote.Menu
 var MenuItem = remote.MenuItem
 
-// Build our new menu
-var menu = new Menu()
-menu.append(new MenuItem({
-  label: 'Delete',
-  click: function() {
-    // Trigger an alert when menu item is clicked
-    alert('Deleted')
-  }
-}))
-menu.append(new MenuItem({
-  label: 'More Info...',
-  click: function() {
-    // Trigger an alert when menu item is clicked
-    alert('Here is more information')
-  }
-}))
+// // Build our new menu
+// var menu = new Menu()
+// menu.append(new MenuItem({
+//   label: 'Delete',
+//   click: function() {
+//     // Trigger an alert when menu item is clicked
+//     alert('Deleted')
+//   }
+// }))
+// menu.append(new MenuItem({
+//   label: 'More Info...',
+//   click: function() {
+//     // Trigger an alert when menu item is clicked
+//     alert('Here is more information')
+//   }
+// }))
 
-// Add the listener
-// document.addEventListener('DOMContentLoaded', function () {
-//   document.querySelector('.js-context-menu').addEventListener('click', function (event) {
-//     console.log('clicked');
-//     menu.popup(remote.getCurrentWindow());
-//   })
-// })
 
 // 全局变量
 let serial = null; // 串口实例
@@ -63,6 +57,12 @@ const dataObj = {
 const hexTab = "0123456789ABCDEF";
 let rxTextArea;
 let rxHandlerPre;
+let tempMiddlewareInstance = null; // 当前正在编辑修改的中间件
+const middlewareFactoryMap = new Map();
+const preMiddlewareInstanceMap = new Map();
+const postMiddlewareInstanceMap = new Map();
+const sendMiddlewareInstanceMap = new Map();
+let mapEditing = null;
 
 // 初始化基本设置栏
 const basicSetupSelectors = ['baudrate-select', 'databits-select', 'stopbits-select', 'parity-select', 'flowcontrol-select'];
@@ -266,37 +266,87 @@ function DOMEventInit() {
     let height = window.innerHeight - 160 - 24 - 10-44;
     $('#rx-display-area').css('height', height);
   });
-  // 中间件的mouse事件
-  $('.middleware-line').mouseover((e)=>{
-    $(e.currentTarget).children('span').show();
-  });
-  $('.middleware-line').mouseout((e)=>{
-    $(e.currentTarget).children('span').hide();
-  });
-  // 中间件上移、下移、删除
-  $('.middleware-line').click((e) => {
+
+  // 中间件上移、下移、删除、编辑
+  $('.list-container').click((e) => {
     let $target = $(e.target);
-    let nextLine = e.currentTarget.nextElementSibling;
     if (e.target.tagName === 'SPAN') {
+      const lineItem = e.target.parentElement;
+
       if ($target.hasClass('icon-down-circled')) { // 下移
-        let next = e.currentTarget.nextElementSibling;
-        next && $(e.currentTarget).detach().insertAfter(next);
+        let next = lineItem.nextElementSibling;
+        next && $(lineItem).detach().insertAfter(next);
       } else if ($target.hasClass('icon-up-circled')) { // 上移
-        let pre = e.currentTarget.previousElementSibling;
-        pre && $(e.currentTarget).detach().insertBefore(pre);
+        let pre = lineItem.previousElementSibling;
+        pre && $(lineItem).detach().insertBefore(pre);
       } else if ($target.hasClass('icon-cancel-squared')) { // 删除
-        $(e.currentTarget).detach();
+        $(lineItem).detach();
+      } else if ($target.hasClass('icon-pencil')) { //编辑中间件
+        const cuid = e.target.previousElementSibling.dataset['cuid'];
+        middlewareDoModal(cuid);
       }
     }
   });
+
   // 中间件添加按钮
   $('.add-middleware').click((e)=>{
-    const target = e.target;
-    const name = target.dataset['name'];
-    $('#shadow-mask').css('display', 'flex');
-    $('#middleware-popup').css('display', 'flex');
+    const type = e.target.dataset['type'];
+    e.target.previousElementSibling.classList.add('list-editing');
+    switch(type) {
+      case 'pre-middleware':
+        mapEditing = preMiddlewareInstanceMap;
+        break;
+      case 'post-middleware':
+        mapEditing = postMiddlewareInstanceMap;
+        break;
+      case 'send-middleware':
+        mapEditing = sendMiddlewareInstanceMap;
+        break;
+      default:
+        return;
+    }
+    middlewareDoModal();
   });
-  // 弹出框按钮处理程序
+
+  // 中间件弹出框确定按钮 单击事件处理程序
+  $('#middleware-popup .ok').click(e => {
+    const operation = document.getElementById('middleware-popup').dataset['operation'];
+    
+    // 收集配置信息并配置
+    const options = document.querySelectorAll('#middleware-options [name]');
+    const conf = {};
+    for(let i=0; i<options.length; i++) {
+      const elm = options[i];
+      conf[elm.getAttribute('name')] = elm.value;
+    }
+    tempMiddlewareInstance.config(conf);
+
+    if (operation === 'add') {
+      const name = tempMiddlewareInstance.name;
+      const cuid = tempMiddlewareInstance.cuid;
+      mapEditing.set(cuid, tempMiddlewareInstance);
+      const divElm = document.createElement('div');
+      divElm.innerHTML = name;
+      divElm.classList.add('middleware-name');
+      divElm.setAttribute('data-cuid', cuid);
+      const line = $('<div class="middleware-line"></div>').append(divElm).append('<span class="icon icon-pencil"></span>')
+      .append('<span class="icon icon-down-circled"></span>')
+      .append('<span class="icon icon-up-circled"></span>')
+      .append('<span class="icon icon-cancel-squared"></span>');
+      $('.list-editing').append(line).removeClass('list-editing');
+      $(line).mouseover((e)=>{
+        $(e.currentTarget).children('span').show();
+      });
+      $(line).mouseout((e)=>{
+        $(e.currentTarget).children('span').hide();
+      });
+    } else if (operation === 'modify') {
+
+    }
+    $('#shadow-mask').hide();
+    $('#middleware-popup').hide();
+  });
+  // 中间件弹出框取消按钮处理程序
   $('#middleware-popup .cancel').click(e => {
     $('#shadow-mask').hide();
     $('#middleware-popup').hide();
@@ -313,6 +363,8 @@ document.addEventListener('DOMContentLoaded', function () {
   DOMEventInit();
   let height = window.innerHeight - 160 - 24 - 10 - 44;
   $('#rx-display-area').css('height', height);
+
+  importMiddleware();
 });
 
 // 消息提示
@@ -352,4 +404,112 @@ function scanMiddlewareDir(dirname) {
   } else {
     return [];
   }
+}
+// import middleware => [mwConstructor1, Constructor2...]
+function importMiddleware() {
+  // middlewareFactoryMap
+  const mws = scanMiddlewareDir('./middleware');
+  const cons = _.map(v => {
+    if (v.type === 'js') {
+      const factory = require('./' + path.join('./middleware', v.name));
+      return {
+        factory,
+        name: path.basename(v.name, path.extname(v.name)),
+        type: factory.type,
+      }
+    }
+    else if (v.type === 'dir') {
+      return {
+        path: path.join('./middleware', v.name),
+        name: v.name,
+        type: 'widget',
+      }
+    }
+  }, mws);
+  _.map(o => {
+    middlewareFactoryMap.set(o.name, o);
+  }, cons);
+}
+
+// 添加中间件的选项，给定中间件的名字，显示中间件的选项
+function addOptions(name, inst = null) {
+  // clear old options
+  $('#middleware-options').empty();
+
+  const o = middlewareFactoryMap.get(name);
+  if (typeof o === 'undefined') {
+    return;
+  }
+  const type = o.type;
+  if (type === 'middleware' || type === 'protocol') {
+    const factory = middlewareFactoryMap.get(name).factory;
+    const instance = inst || factory();
+    instance.name = name;
+    tempMiddlewareInstance = instance;
+    if (instance.cuid === undefined) {
+      instance.cuid = cuid();
+    }
+    if (typeof instance.getOptions === 'function') {
+      const options = instance.getOptions();
+      _.map(option => {
+        if (option.type === 'select') {
+          const elm = document.createElement('select');
+          elm.setAttribute('name', option.name);
+          const values = option.values;
+          _.map(x => {
+            const op = document.createElement('option');
+            op.innerHTML = x;
+            elm.appendChild(op);
+          }, values);
+          const label = document.createElement('label');
+          label.innerHTML = (option.label || '') + ':';
+          label.appendChild(elm);
+          const div = document.createElement('div');
+          div.appendChild(label);
+          $('#middleware-options').append(div);
+          // 设置当前值
+          if (option.currentValue) {
+            elm.value = option.currentValue;
+          }
+        } else if (option.type === 'text') {
+
+        } else if (option.type === 'check') {
+
+        } // ...
+      }, options);
+    }
+  }
+}
+// 添加middleware或者修改middleware
+function middlewareDoModal(cuid = null) {
+  const header = document.getElementById('middleware-select');
+  header.innerHTML = '';
+  if (cuid) {
+    document.getElementById('middleware-popup').setAttribute('data-operation', 'modify');
+    tempMiddlewareInstance = preMiddlewareInstanceMap.get(cuid);
+    if (!tempMiddlewareInstance) tempMiddlewareInstance = postMiddlewareInstanceMap.get(cuid);
+    if (!tempMiddlewareInstance) tempMiddlewareInstance = sendMiddlewareInstanceMap.get(cuid);
+    $(header).append(`<label>更改中间件：${tempMiddlewareInstance.name}</label>`);
+    addOptions(tempMiddlewareInstance.name, tempMiddlewareInstance);
+  } else {
+    // 列出所有中间件的名字，供选择添加，选择某中间件后，列出其可配置选项
+    document.getElementById('middleware-popup').setAttribute('data-operation', 'add');
+    const selectElm = document.createElement('select');
+    selectElm.addEventListener('change', (e)=>{
+      const name = e.target.value;
+      addOptions(name);
+    });
+
+    for(const name of middlewareFactoryMap.keys()) {
+      $(`<option>${name}</option>`).appendTo(selectElm);
+    }
+    if (selectElm.children.length > 0) {
+      selectElm.firstElementChild.selected = true;
+      const name = selectElm.firstElementChild.value;
+      addOptions(name);
+    }
+    $(header).append($('<label>选择中间件：</label>').append(selectElm));
+  }
+  $('#shadow-mask').css('display', 'flex');
+  $('#middleware-popup').css('display', 'flex');
 }

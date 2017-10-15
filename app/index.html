@@ -29,57 +29,26 @@
     </fieldset>
     <fieldset class="pre-middleware-fs">
       <legend>前置中间件</legend>
-      <div>
-        <div class="middleware-line">
-          <div class="middleware-name">FF-Protocal</div>
+      <div class="list-container">
+        <!-- <div class="middleware-line">
+          <div class="middleware-name" data-cuid="xxxyyy">FF-Protocal</div>
+          <span class="icon icon-pencil"></span>
           <span class="icon icon-down-circled"></span>
           <span class="icon icon-up-circled"></span>
           <span class="icon icon-cancel-squared"></span>
-        </div>
-        <div class="middleware-line">
-          <div class="middleware-name">Unicode2GB18030</div>
-          <span class="icon icon-down-circled"></span>
-          <span class="icon icon-up-circled"></span>
-          <span class="icon icon-cancel-squared"></span>
-        </div>
-        <div class="middleware-line">
-          <div class="middleware-name">save2disk</div>
-          <span class="icon icon-down-circled"></span>
-          <span class="icon icon-up-circled"></span>
-          <span class="icon icon-cancel-squared"></span>
-        </div>
+        </div> -->
       </div>
-      <button class="btn btn-mini btn-primary add-middleware" data-name="pre-middleware">Add</button>
+      <button class="btn btn-mini btn-primary add-middleware" data-type="pre-middleware">Add</button>
     </fieldset>
-    <fieldset class="after-middleware-fs">
+    <fieldset class="post-middleware-fs">
       <legend>后置中间件</legend>
-      <div>
-        <div class="middleware-line">
-          <div class="middleware-name">draw-line</div>
-          <span class="icon icon-down-circled"></span>
-          <span class="icon icon-up-circled"></span>
-          <span class="icon icon-cancel-squared"></span>
-        </div>
-      </div>
-      <button class="btn btn-mini btn-primary add-middleware" data-name="after-middleware">Add</button>
+      <div class="list-container"></div>
+      <button class="btn btn-mini btn-primary add-middleware" data-type="post-middleware">Add</button>
     </fieldset>
     <fieldset class="send-middleware-fs">
       <legend>发送中间件</legend>
-      <div>
-        <div class="middleware-line">
-          <div class="middleware-name">Unicode2GB18030</div>
-          <span class="icon icon-down-circled"></span>
-          <span class="icon icon-up-circled"></span>
-          <span class="icon icon-cancel-squared"></span>
-        </div>
-        <div class="middleware-line">
-          <div class="middleware-name">loopback</div>
-          <span class="icon icon-down-circled"></span>
-          <span class="icon icon-up-circled"></span>
-          <span class="icon icon-cancel-squared"></span>
-        </div>
-      </div>
-      <button class="btn btn-mini btn-primary add-middleware" data-name="send-middleware">Add</button>
+      <div class="list-container"></div>
+      <button class="btn btn-mini btn-primary add-middleware" data-type="send-middleware">Add</button>
     </fieldset>
   </div>
 
@@ -123,15 +92,18 @@
   <footer class="toolbar toolbar-footer"><h1 class="title">status</h1></footer>
 
   <div id="shadow-mask">
-    <div id="middleware-popup" class="popup">
+    <div id="middleware-popup" class="popup modal" data-operation="add-or-modify">
       <div class="header"><p class="title">middleware select</p></div>
-      <div class="content">content</div>
+      <div class="content">
+        <div id="middleware-select"></div>
+        <div id="middleware-options"></div>
+      </div>
       <div class="footer">
         <button class="btn btn-default cancel">取消</button>
         <button class="btn btn-primary ok">确定</button>
       </div>
     </div>
-    <div id="message-popup" class="popup" style="display: none;">
+    <div id="message-popup" class="popup modal" style="display: none;">
       <div class="header"><p class="title">Message</p></div>
       <div class="content">content</div>
       <div class="footer">

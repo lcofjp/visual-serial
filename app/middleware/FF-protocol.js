@@ -89,6 +89,7 @@ function FF() {
   return {
     decode,
     encode,
+    type: 'protocol',
   }
 }
 
