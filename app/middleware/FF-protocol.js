@@ -1,6 +1,6 @@
 function FF() {
   /*
-  * FF协议，有FF开头和结尾，内容中的FF则转为FE 01，内容中的FE转为FE 00；
+  * 自定义的FF协议，由FF开头和结尾，内容中的FF则转为FE 01，内容中的FE转为FE 00；
   * 接收： 状态1(SEEK_HEAD). 寻找开头的FF，遇到FF则转换为RX_CONTENT
   *       状态2(RX_CONTENT)，接收一个字节，则rxCnt+=1，遇到FE，置escapeFlag，
             遇到FF，则如果rxCnt不为0则结束，为0则rxCnt=0；
@@ -68,7 +68,7 @@ function FF() {
   
   function encode(buf, serial, next) {
     let a = [0xFF];
-    let x = xorSum;
+    let xorSum = 0;
     for(let c of buf) {
       xorSum ^= c;
       if (c === 0xFF) {
@@ -82,14 +82,13 @@ function FF() {
         a.push(c);
       }
     }
-    a.push(x);
+    a.push(xorSum);
     a.push(0xFF);
     next(Buffer.from(a), serial);
   }
   return {
     decode,
     encode,
-    type: 'protocol',
   }
 }
 

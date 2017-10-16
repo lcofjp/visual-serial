@@ -48,7 +48,17 @@ textarea {
 footer {
   grid-row: 3 / 4;
   grid-column: 1 / 3;
+  display: flex;
+  justify-content: center;
 }
+footer > p {
+  padding: 0;
+  margin: 0;
+}
+footer span:not(:last-child):after {
+  content: ' |';
+}
+
 #sidebar .basic-setup {
   display: grid;
   grid-template-rows: auto;
@@ -149,6 +159,9 @@ fieldset > legend {
 .middleware-line > span {
   display: none;
 }
+.middleware-line:hover > span {
+  display: inline-block;
+}
 .middleware-line > span:hover {
   color: goldenrod;
 }
@@ -231,6 +244,7 @@ label {
 .icon-up-circled {
   cursor: n-resize;
 }
-.icon-cancel-squared {
+.icon-cancel-squared, .icon-pencil {
   cursor: pointer;
 }
+

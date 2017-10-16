@@ -54,7 +54,7 @@
 
   <div id="content">
     <div id="rx-region">
-      <div>接收区</div>
+      <div>接收区<span style="font-size: .8em;">(PROTOCOL方式单击条目复制,RAW方式选择后ctrl+c/command+c复制)</span></div>
       <div id="rx-content">
         <div id="rx-display-area">
           <textarea id="textarea-rx" placeholder="empty, no data yet."></textarea>
@@ -69,7 +69,7 @@
             <option selected>RAW-HEX</option>
             <option>RAW-STRING</option>
           </select>
-          <button class="btn btn-mini btn-default">清空</button>
+          <button id="rx-clear" class="btn btn-mini btn-default">清空</button>
         </div>
       </div>
     </div>
@@ -80,16 +80,29 @@
         <button id="btn-send-data" class="btn btn-mini btn-primary">发送</button>
       </div>
       <div id="tx-setup">
-        <label><input type="checkbox" id="append-return" />末尾加0x0D(\r)</label>
-        <label><input type="checkbox" id="append-linefeed" />末尾加0x0A(\n)</label>
+        <label title="在输入区域敲入回车即可发送\n,如果要发送\r\n，则勾选此选项，(十六进制下此选项无效)">
+          <input type="checkbox" id="insert-return" />
+          (\n<span class="icon icon-right"></span>\r\n)
+        </label>
         <label><input type="checkbox" id="send-hex" />十六进制</label>
-        <label><input type="checkbox" id="send-decimal" />十进制</label>
+        <label><input type="checkbox" id="send-decimal" disabled />十进制</label>
         <label><input type="checkbox" id="send-by-script" disabled />脚本</label>
       </div>
     </div>
   </div>
 
-  <footer class="toolbar toolbar-footer"><h1 class="title">status</h1></footer>
+  <footer class="toolbar toolbar-footer">
+    <p>
+      串口状态：
+      <span id="serial-status">关闭</span>
+      接收字节数：
+      <span id="rx-byte-count">0</span>
+      接收条目数：
+      <span id="rx-item-count">0</span>
+      发送字节数：
+      <span id="tx-byte-count">0</span>
+    </p>
+  </footer>
 
   <div id="shadow-mask">
     <div id="middleware-popup" class="popup modal" data-operation="add-or-modify">

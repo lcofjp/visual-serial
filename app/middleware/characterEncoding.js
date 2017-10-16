@@ -16,7 +16,8 @@
 const iconv = require('iconv-lite');
 
 const supportedEncodings = [
-  'UTF8', 'UTF-16', 'UTF-16BE', 'ascii', 'hex', 'base64', 'GB2312', 'GBK', 'GB18030', 'Windows936', 'EUC-CN',
+  'UTF8', 'UTF-16', 'UTF-16BE', 'ascii', 'hex', 'base64', 'binary',
+  'GB2312', 'GBK', 'GB18030', 'Windows936', 'EUC-CN',
   'ISO-8859-1', 'ISO-8859-2',
   'Big5', 'Big5-HKSCS', 'EUC-KR',
   'KS_C_5601', 'Windows949', 'EUC-KR',
@@ -31,8 +32,8 @@ function characterEncodeingConversion() {
     }
     else {
       const str = iconv.decode(buf, from);
-      const buf = iconv.encode(str, to);
-      next(buf, serial);
+      const bufd = iconv.encode(str, to);
+      next(bufd, serial);
     }
   }
 
@@ -55,7 +56,6 @@ function characterEncodeingConversion() {
     entry,
     getOptions,
     config,
-    type: 'middleware',
   }
 }
 

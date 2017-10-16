@@ -3,8 +3,32 @@ const valuesList = [30, 50, 100, 200, 400, 800];
 
 function TIMEOUT() {
   let timeoutValue = 50; //unit: ms
+  let id = null;
+  let totalByteCount = 0;
+  const bufArray = [];
+
   function entry(buf, serial, next) {
-    next(buf);
+    if (id !== null) {
+      clearTimeout(id);
+      id = null;
+    }    
+    
+    bufArray.push(buf);
+    totalByteCount += buf.length;
+
+    if (totalByteCount > 10240) {
+      next(Buffer.concat(bufArray, totalByteCount));
+      bufArray.length = 0;
+      totalByteCount = 0;
+    }
+    else {
+      id = setTimeout(()=>{
+        id = null;
+        next(Buffer.concat(bufArray, totalByteCount));
+        bufArray.length = 0;
+        totalByteCount = 0;
+      }, timeoutValue);
+    }
   }
   function getOptions() {
     return [
@@ -24,7 +48,6 @@ function TIMEOUT() {
     entry,
     getOptions,
     config,
-    type: 'middleware',
   }
 }
 TIMEOUT.type = 'middleware';

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>drawgraph</title>
+    <link rel="stylesheet" href="./index.css" />
+  </head>
+  <body>
+    <header><span>drawgraph</span></header>
+    <aside>
+      <table>
+        <thead>
+          <tr>
+            <th>draw</th>
+            <th>offset</th>
+            <th>datatype</th>
+            <th>BE</th>
+            <th>color</th>
+            <th>min</th>
+            <th>max</th>
+            <th>value</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><input type="checkbox" /></td>
+            <td><input type="text" style="width: 30px;" /></td>
+            <td><select><option>uint8</option></select></td>
+            <td><input type="checkbox" /></td>
+            <td>
+              <div style="background-color: red">
+                <span>red</span>
+                <div style="position: absolute; background-color: blue;">blue</div>
+              </div></td>
+            <td><input style="width: 30px" type="text" /></td>
+            <td><input style="width: 30px" type="text" /></td>
+            <td><input style="width: 30px" type="text" disabled /></td>
+          </tr>
+        </tbody>
+      </table>
+    </aside>
+    <div class="viewer">
+      <canvas></canvas>
+    </div>
+    <footer>status</footer>
+    <script src="index.js"></script>
+  </body>
+</html>
