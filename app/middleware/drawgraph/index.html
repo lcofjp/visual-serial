@@ -2,10 +2,11 @@
 <html>
   <head>
     <title>drawgraph</title>
+    <link rel="stylesheet" href="../../assets/css/photon.min.css" />
     <link rel="stylesheet" href="./index.css" />
   </head>
   <body>
-    <header><span>drawgraph</span></header>
+    <header class="toolbar toolbar-header"><span>drawgraph</span></header>
     <aside>
       <table>
         <thead>
@@ -23,17 +24,75 @@
         <tbody>
           <tr>
             <td><input type="checkbox" /></td>
-            <td><input type="text" style="width: 30px;" /></td>
-            <td><select><option>uint8</option></select></td>
+            <td><input type="text" /></td>
+            <td>
+              <select>
+                <option>uint8</option>
+                <option>int8</option>
+                <option>uint16</option>
+                <option>int16</option>
+                <option>uint32</option>
+                <option>int32</option>
+                <option>float</option>
+                <option>double</option>
+              </select>
+            </td>
+            <td><input class="control" type="checkbox" /></td>
+            <td>
+              <div class="color" style="display: relative;">
+                <div style="display: relative; background-color: red; width: 100%; height: 1rem;"></div>
+                <div id="color-palette" tabindex="-1">
+                  <div style="background-color: red;"></div>
+                  <div style="background-color: blue;"></div>
+                  <div style="background-color: green;"></div>
+                  <div style="background-color: yellow;"></div>
+                  <div style="background-color: orange"></div>
+                  <div style="background-color: dodgerblue"></div>
+                  <div style="background-color: purple"></div>
+                  <div style="background-color: fuchsia"></div>
+                  <div style="background-color: lime"></div>
+                  <div style="background-color: olive"></div>
+                  <div style="background-color: navy"></div>
+                  <div style="background-color: teal"></div>
+                  <div style="background-color: cyan"></div>
+                  <div style="background-color: brown"></div>
+                  <div style="background-color: cadetblue"></div>
+                  <div style="background-color: coral"></div>
+                </div>
+              </div>
+            </td>
+            <td><input type="text" /></td>
+            <td><input type="text" /></td>
+            <td><input type="text" disabled /></td>
+          </tr>
+
+          <tr>
+            <td><input type="checkbox" /></td>
+            <td><input type="text" /></td>
+            <td>
+              <select>
+                <option>uint8</option>
+                <option>int8</option>
+                <option>uint16</option>
+                <option>int16</option>
+                <option>uint32</option>
+                <option>int32</option>
+                <option>float</option>
+                <option>double</option>
+              </select>
+            </td>
             <td><input type="checkbox" /></td>
             <td>
-              <div style="background-color: red">
-                <span>red</span>
-                <div style="position: absolute; background-color: blue;">blue</div>
-              </div></td>
-            <td><input style="width: 30px" type="text" /></td>
-            <td><input style="width: 30px" type="text" /></td>
-            <td><input style="width: 30px" type="text" disabled /></td>
+              <div class="color" style="display: relative;">
+                <div style="display: relative; background-color: green; width: 100%; height: 1rem;"></div>
+              </div>
+            </td>
+            <td><input type="text" /></td>
+            <td><input type="text" /></td>
+            <td><input type="text" disabled /></td>
+          </tr>
+          <tr id="add-new-line">
+            <td><span class="icon icon-plus-squared"></span></td>
           </tr>
         </tbody>
       </table>
@@ -41,7 +100,7 @@
     <div class="viewer">
       <canvas></canvas>
     </div>
-    <footer>status</footer>
+    <footer class="toolbar toolbar-footer">status</footer>
     <script src="index.js"></script>
   </body>
 </html>
