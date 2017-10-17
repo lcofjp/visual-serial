@@ -31,7 +31,7 @@
     "jquery": "^3.2.1",
     "lodash": "^4.17.4",
     "ramda": "^0.25.0",
-    "serialport": "^5.0.0",
+    "serialport": "^6.0.0",
     "titlebar": "^1.4.0"
   }
 }

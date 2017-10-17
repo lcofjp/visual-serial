@@ -449,10 +449,10 @@ function DOMEventInit() {
     console.log('change');
   });
   function setRTSDTR(pin, e) {
-    const checked = e.target.checked;
+    const rtsChecked = document.getElementById('set-rts').checked;
+    const dtrChecked = document.getElementById('set-dtr').checked;
     if (serial && serial.isOpen) {
-      serial.set({pin: checked}, e=>console.log(e));
-      console.log(pin, checked);
+      serial.set({rts: rtsChecked, dtr: dtrChecked,});
     } else {
       e.preventDefault();
     }
