@@ -32,6 +32,7 @@ const dataObj = {
   protocolStr: '',
   itemCnt: 0,
   totalRxCnt: 0,
+  totalTxCnt: 0,
 }
 const hexTab = "0123456789ABCDEF";
 let rxTextArea;
@@ -52,14 +53,7 @@ function basicSetupFormInit() {
   const stopBits = [1,2];
   const parities = ['none', 'even', 'odd', 'mark', 'space'];
   const flowControls = ['无', 'RTS/CTS', 'XON/XOFF'];  
-  // 获取串口名称
-  initSerialList(ports=>{
-    const $devNames = $('#device-name-select');
-    $devNames.empty();
-    _.map(v=>{
-      $devNames.append($(`<option>${v}</option>`));
-    }, ports);
-  });
+  refreshSerialList();
   // 初始化默认波特率
   // 初始化停止位
   // 初始化校验位
@@ -72,6 +66,17 @@ function basicSetupFormInit() {
       $elm.append(`<option>${v}</option>`)
     }, a[0]);
   }, _.zip(arrs, basicSetupSelectors));
+}
+// 刷新串口设备
+function refreshSerialList() {
+  // 添加串口名称
+  initSerialList(ports=>{
+    const $devNames = $('#device-name-select');
+    $devNames.empty();
+    _.map(v=>{
+      $devNames.append($(`<option>${v}</option>`));
+    }, ports);
+  });
 }
 // 获取串口列表
 function initSerialList(cb) {
@@ -155,9 +160,11 @@ function handleSerialError(err) {
 }
 // 基本设置栏 事件处理初始化
 function basicSetupEventInit() {
-  const $openButton = $('#open-device');
-  $openButton.click(function(e){
+  $('#open-device').click(function(e){
     handleOpenClick(e);
+  });
+  $('#refresh-device').click(e => {
+    refreshSerialList();
   });
 }
 // 基本设置栏设置入口
@@ -254,6 +261,8 @@ display.format = 'RAW-HEX';
 // 发送数据函数
 function sendLast(buf, serial, next) {
   serial.write(buf);
+  dataObj.totalTxCnt += buf.length;
+  statusbarSet('txByteCount', dataObj.totalTxCnt);
 }
 
 function DOMEventInit() {
@@ -398,6 +407,7 @@ function DOMEventInit() {
   // 清空接收缓冲区和显示区域
   $('#rx-clear').click(e => {
     dataObj.totalRxCnt = 0;
+    dataObj.totalTxCnt = 0;
     dataObj.itemCnt = 0;
     dataObj.rawHex = '';
     dataObj.rawStr = '';
@@ -432,7 +442,7 @@ function DOMEventInit() {
     } else if (e.target.id === 'send-decimal' && e.target.checked) {
       $('#send-hex')[0].checked = false;
     }
-  })
+  });
 }
 
 // window / document 全局事件

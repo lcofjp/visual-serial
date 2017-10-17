@@ -24,7 +24,7 @@ function TIMEOUT() {
     else {
       id = setTimeout(()=>{
         id = null;
-        next(Buffer.concat(bufArray, totalByteCount));
+        next(Buffer.concat(bufArray, totalByteCount), serial);
         bufArray.length = 0;
         totalByteCount = 0;
       }, timeoutValue);
