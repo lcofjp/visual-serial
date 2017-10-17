@@ -134,6 +134,10 @@ function handleOpenClick(e) {
     serial.open(err=>{
       if(err) {
         console.log('open serial port failed!', err);
+        $btn.removeClass('btn-warning').removeClass('btn-positive').addClass('btn-default').html('打开');
+        $btn.prop('disabled', false);
+        serial = null;
+        refreshSerialList();
       }
     });
     serial.on('data', handleSerialRecieveData);
@@ -442,7 +446,19 @@ function DOMEventInit() {
     } else if (e.target.id === 'send-decimal' && e.target.checked) {
       $('#send-hex')[0].checked = false;
     }
+    console.log('change');
   });
+  function setRTSDTR(pin, e) {
+    const checked = e.target.checked;
+    if (serial && serial.isOpen) {
+      serial.set({pin: checked}, e=>console.log(e));
+      console.log(pin, checked);
+    } else {
+      e.preventDefault();
+    }
+  }
+  document.getElementById('set-rts').addEventListener('click', setRTSDTR.bind(null, 'rts'));
+  document.getElementById('set-dtr').addEventListener('click', setRTSDTR.bind(null, 'dtr'));
 }
 
 // window / document 全局事件
