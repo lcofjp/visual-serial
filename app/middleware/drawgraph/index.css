@@ -72,6 +72,10 @@ tr {
   height: 1rem;
   line-height: 1rem;
 }
+tr:active {
+  color: inherit;
+  background-color: inherit;
+}
 
 input[type="number"] {
   width: 50px;
