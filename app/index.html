@@ -58,7 +58,7 @@
       <div>接收区<span>(PROTOCOL方式单击条目复制,RAW方式选择后ctrl+c/command+c复制)</span></div>
       <div id="rx-content">
         <div id="rx-display-area">
-          <textarea id="textarea-rx" placeholder="empty, no data yet."></textarea>
+          <textarea id="textarea-rx" placeholder="data will be display here"></textarea>
           <div id="display-list" style="display: none;">
           </div>
         </div>
@@ -77,7 +77,11 @@
     <div id="tx-region">
       <div>发送区</div>
       <div id="tx-content">
-        <textarea placeholder="type data to send here."></textarea>
+        <textarea placeholder="
+        https://github.com/lcofjp/visual-serial
+        send string: hello world
+        send hex: {0x12, 0x34, 0xab} or 12 34 ab or 12H ABH
+        "></textarea>
         <button id="btn-send-data" class="btn btn-mini btn-primary">发送</button>
       </div>
       <div id="tx-setup">
