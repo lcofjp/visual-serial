@@ -7,7 +7,7 @@
   </head>
   <body>
     <header class="toolbar toolbar-header"><span>drawgraph</span></header>
-    <aside>
+    <aside id="sidebar">
       <table>
         <thead>
           <tr>
@@ -24,7 +24,7 @@
         <tbody id="tbody">
           <tr>
             <td><input type="checkbox" /></td>
-            <td><input type="text" /></td>
+            <td><input class="offset" type="number" /></td>
             <td>
               <select>
                 <option>uint8</option>
@@ -61,14 +61,14 @@
                 </div>
               </div>
             </td>
-            <td><input type="text" /></td>
-            <td><input type="text" /></td>
-            <td><input type="text" disabled /></td>
+            <td><input type="number" /></td>
+            <td><input type="number" /></td>
+            <td><input type="number" disabled /></td>
           </tr>
 
           <tr>
             <td><input type="checkbox" /></td>
-            <td><input type="text" /></td>
+            <td><input class="offset" type="number" /></td>
             <td>
               <select>
                 <option>uint8</option>
@@ -87,20 +87,21 @@
                 <div style="display: relative; background-color: green; width: 100%; height: 1rem;"></div>
               </div>
             </td>
-            <td><input type="text" /></td>
-            <td><input type="text" /></td>
-            <td><input type="text" disabled /></td>
+            <td><input type="number" /></td>
+            <td><input type="number" /></td>
+            <td><input type="number" disabled /></td>
           </tr>
           <tr id="add-new-line">
             <td><span class="icon icon-plus-squared"></span></td>
           </tr>
         </tbody>
       </table>
+      
     </aside>
     <div class="viewer">
-      <canvas></canvas>
+      <canvas id="canvas"></canvas>
     </div>
-    <footer class="toolbar toolbar-footer">status</footer>
+    <footer class="toolbar toolbar-footer"><div id="canvas-info"></div></footer>
     <script src="index.js"></script>
   </body>
 </html>

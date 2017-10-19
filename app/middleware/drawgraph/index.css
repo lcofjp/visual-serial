@@ -20,6 +20,7 @@ header {
 }
 aside {
   background-color: rgb(245,245,244);
+  border-right: 1px solid #c2c0c2;
   display: flex;
   grid-row: 2/3;
   grid-column: 1/2;
@@ -39,11 +40,10 @@ div.viewer {
   width: 100%;
   height: 100%;
 }
-canvas {
-  border-left: 1px solid #c2c0c2;
+/* canvas {
   width: 100%;
   height: 100%;
-}
+} */
 td, th {
   text-align: center;
 }
@@ -73,10 +73,27 @@ tr {
   line-height: 1rem;
 }
 
-table input[type="text"] {
+input[type="number"] {
   width: 50px;
 }
-
+td:last-child > input {
+  width: 80px;
+}
+input.offset {
+  width: 2rem;
+}
 tbody {
   background-color: rgb(245,245,244);
+}
+
+.viewer {
+  overflow: hide;
+  width: 100%;
+  height: 100%;
+}
+canvas {
+  width: 100%;
+  height: 100%;
+  min-width: 100px;
+  min-height: 100px;
 }
