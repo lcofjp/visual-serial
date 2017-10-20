@@ -18,8 +18,7 @@
 * 执行命令：`npm install`
 
 ### 4. 编译serialport模块
-* 进入目录: `cd visual-serial/app/node_modules/serialport`
-* 执行命令: `../.bin/electron-rebuild`
+* 执行命令: `./node_modules/.bin/electron-rebuild`
 
 ### 5. 运行程序
 * 切换到`visual-serial/app`目录
