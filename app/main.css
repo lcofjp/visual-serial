@@ -116,6 +116,7 @@ textarea {
   padding: 0;
   border-bottom: 1px solid #c2c0c2;
   background-image: linear-gradient(to bottom, #e8e6e8 0, #d1cfd1 100%);
+  word-break: break-all;
 }
 #display-list {
   overflow-y: scroll;
