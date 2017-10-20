@@ -1,3 +1,4 @@
 app/node_modules
 app/test.html
+app/test.js
 .DS_Store

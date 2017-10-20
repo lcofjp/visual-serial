@@ -5,7 +5,7 @@ function FF() {
   *       状态2(RX_CONTENT)，接收一个字节，则rxCnt+=1，遇到FE，置escapeFlag，
             遇到FF，则如果rxCnt不为0则结束，为0则rxCnt=0；
   */
-  let rxBuf = new Buffer(1024);
+  let rxBuf = Buffer.alloc(1024);
   const SEEK_HEAD = 0,
         RX_CONTENT = 1;
   let rxState = SEEK_HEAD;
@@ -15,7 +15,7 @@ function FF() {
   function decode(buf, serial, next) {
     // 判断缓冲区大小够不够
     if (buf.length + rxCnt > rxBuf.length) {
-      let newBuf = Buffer.allocUnsafe(buf.lengh + rxCnt + 1024);
+      let newBuf = Buffer.alloc(buf.length + rxCnt + 1024);
       rxBuf.copy(newBuf, 0, 0, rxCnt);
       rxBuf = newBuf;
     }
@@ -39,7 +39,7 @@ function FF() {
               checkSum ^= rxBuf[j];
             }
             if (checkSum === 0) {
-              let nextBuf = Buffer.allocUnsafe(rxCnt-1);
+              let nextBuf = Buffer.alloc(rxCnt-1);
               rxBuf.copy(nextBuf, 0, 0, rxCnt-1);
               next(nextBuf, serial);
             }
