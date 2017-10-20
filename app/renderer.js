@@ -80,14 +80,18 @@ function refreshSerialList() {
 }
 // 获取串口列表
 function initSerialList(cb) {
-  SerialPort.list()
-  .then(ports=>{
-    const names = ports.map(p=>p.comName);
-    if(typeof cb === 'function') {
-      cb(names);
+  SerialPort.list((err, ports) =>
+    {
+      if (err) {
+        console.log(err);
+        return;
+      }
+      const names = ports.map(p=>p.comName);
+      if(typeof cb === 'function') {
+        cb(names);
+      }
     }
-  }) 
-  .catch(err=>console.log(err));
+  );
 }
 function getBasicOptions() {
   const selectors = _.concat('device-name-select', basicSetupSelectors);
