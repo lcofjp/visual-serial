@@ -403,6 +403,7 @@ function DOMEventInit() {
   });
   // 中间件弹出框取消按钮处理程序
   $('#middleware-popup .cancel').click(e => {
+    $('.list-editing').removeClass('list-editing');
     $('#shadow-mask').hide();
     $('#middleware-popup').hide();
   });
@@ -586,11 +587,27 @@ function addOptions(name, inst = null) {
           if (option.currentValue) {
             elm.value = option.currentValue;
           }
-        } else if (option.type === 'text') {
-
         } else if (option.type === 'check') {
+          const label = $('<label>');
+          const check = $('<input type="checkbox" >').attr('name', option.name).prop('checked', option.checked || false);
+          label.append(check).append(option.label);
+          const div = $('<div>');
+          div.append(label).appendTo('#middleware-options');
+        } else if (option.type === 'radio') {
+          const label = $('<label></label>');
+          const radio = $('<input type="radio">').attr('name', option.name).prop('checked', option.checked || false);
+          label.append(radio).append(option.label);
+          const div = $('<div></div>');
+          div.append(label).appendTo('#middleware-options');
+        } else if (option.type === 'file') {
 
-        } // ...
+        } else if (option.type === 'text') {
+          const element = document.createElement('p');
+          element.innerHTML = option.content || '';
+          const div = document.createElement('div');
+          div.appendChild(element);
+          $('#middleware-options').append(div);
+        }
       }, options);
     }
   }
