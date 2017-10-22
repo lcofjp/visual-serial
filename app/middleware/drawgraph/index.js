@@ -70,7 +70,7 @@ function handleFormChange(e, elm) {
         o.buf.push(v);
       }
     })),
-    R.filter(o => o.offset.trim() !== '' && !Object.is(NaN, Number(o.offset))),
+    R.filter(o => o && o.offset.trim() !== '' && !Object.is(NaN, Number(o.offset))),
   )(tableProperties);
   // 生成绘图是所用的参数
   drawGraphParameters = R.compose(
@@ -82,7 +82,7 @@ function handleFormChange(e, elm) {
         color: o.color,
       }
     }),
-    R.filter(o => o.draw),
+    R.filter(o => o && o.draw),
   )(tableProperties);
 }
 // generate a table line (tr)
