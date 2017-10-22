@@ -28,7 +28,7 @@ function characterEncodeingConversion() {
 
   function entry (buf, serial, next) {
     if (from === to) {
-        next(buf);
+      next(buf, serial);
     }
     else {
       const str = iconv.decode(buf, from);
@@ -39,8 +39,8 @@ function characterEncodeingConversion() {
 
   function getOptions() {
     return [
-      {name: 'from', label: '源编码', type: 'select', values: supportedEncodings, currentValue: from },
-      {name: 'to', label: '目标编码', type: 'select', values: supportedEncodings, currentValue: to },
+      { name: 'from', label: '源编码', type: 'select', values: supportedEncodings },
+      { name: 'to', label: '目标编码', type: 'select', values: supportedEncodings },
     ];
   }
   function config(options) {
@@ -52,10 +52,17 @@ function characterEncodeingConversion() {
       to = t;
     }
   }
+  function getConfig() {
+    return {
+      from,
+      to,
+    }
+  }
   return {
     entry,
     getOptions,
     config,
+    getConfig,
   }
 }
 

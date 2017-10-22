@@ -1,3 +1,6 @@
+* {
+  word-break: break-all;
+}
 
 body {
   display: grid;
@@ -78,7 +81,9 @@ footer span:not(:last-child):after {
   flex-direction: row;
   align-items: center;
   height: auto;
+  margin: 2px;
 }
+
 #rx-content {
   display: flex;
   flex: 1;
@@ -131,10 +136,15 @@ textarea {
   margin-left: 5px;
   margin-bottom: 0;
 }
+#btn-loopback {
+  width: 78px;
+  margin-left: auto;
+}
 #btn-send-data {
   width: 80px;
   margin-left: 5px;
 }
+
 .middleware-line:first-child {
   border-top: 1px solid #c2c0c2;
 }
@@ -231,7 +241,11 @@ label {
 .popup .footer button:first-child {
   margin-left: auto;
 }
-
+#middleware-options input[type="radio"],
+#middleware-options input[type="checkbox"] {
+  margin-left: 2px;
+  margin-right: 5px;
+}
 #display-list > p {
   cursor: copy;
 }
@@ -246,3 +260,6 @@ label {
   cursor: pointer;
 }
 
+button[disabled] {
+  cursor: not-allowed;
+}

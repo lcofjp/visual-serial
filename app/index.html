@@ -25,7 +25,7 @@
         <div class="column1">校验位：</div><select id="parity-select" class="column2"><option>1</option></select>
         <div class="column1">流控制：</div><select id="flowcontrol-select" class="column2"><option>无</option></select>
         <button id="refresh-device" class="column1 btn btn-mini btn-default">刷新<span class="icon icon-arrows-ccw"></span></button>
-        <button id="open-device" class="btn btn-mini btn-default">打开</button>
+        <button id="btn-open" class="btn btn-mini btn-default">打开</button>
       </div>
     </fieldset>
     <fieldset class="pre-middleware-fs">
@@ -55,7 +55,7 @@
 
   <div id="content">
     <div id="rx-region">
-      <div>接收区<span>(PROTOCOL方式单击条目复制,RAW方式选择后ctrl+c/command+c复制)</span></div>
+      <div>接收区<span>(ITEM方式单击条目复制,RAW方式选择后ctrl+c/command+c复制)</span></div>
       <div id="rx-content">
         <div id="rx-display-area">
           <textarea id="textarea-rx" placeholder="data will be display here"></textarea>
@@ -65,10 +65,11 @@
         <div id="rx-display-setup">
           <label for="display-format-select">显示方式:</label>
           <select id="display-format-select">
-            <option>PROTOCOL-HEX</option>
-            <option>PROTOCOL-STRING</option>
+            <option>ITEM-HEX</option>
+            <option>ITEM-STRING</option>
             <option selected>RAW-HEX</option>
             <option>RAW-STRING</option>
+            <option>NOT-DISPLAY</option>
           </select>
           <button id="rx-clear" class="btn btn-mini btn-default">清空</button>
         </div>
@@ -94,6 +95,7 @@
         <label><input type="checkbox" id="send-by-script" disabled />脚本</label>
         <label><input type="checkbox" id="set-rts" />RTS</label>
         <label><input type="checkbox" id="set-dtr" />DTR</label>
+        <button id="btn-loopback" class="btn btn-mini btn-primary">loopback</button>
       </div>
     </div>
   </div>
