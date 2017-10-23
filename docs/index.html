@@ -1,31 +1,144 @@
 <!doctype html>
 <html class="no-js" lang="">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>visual-serial document</title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>visual-serial document</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <link rel="manifest" href="site.webmanifest">
-        <link rel="apple-touch-icon" href="icon.png">
-        <!-- Place favicon.ico in the root directory -->
-        <link rel="shortcut icon" href="/visual-serial/favicon.ico" />
+    <link rel="manifest" href="site.webmanifest">
+    <link rel="apple-touch-icon" href="icon.png">
+    <link rel="shortcut icon" href="/visual-serial/favicon.ico" />
 
-        <link rel="stylesheet" href="css/normalize.css">
-        <link rel="stylesheet" href="css/main.css">
-    </head>
-    <body>
-        <!--[if lte IE 9]>
-            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
-        <![endif]-->
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/main.css">
+  </head>
+  <body>
+    <!--[if lte IE 9]>
+    <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
+    <![endif]-->
+    <div id="main-content">
+      <h1>visual-serial功能介绍</h1>
+      <p>
+        visual-serial基于<a href="https://electron.atom.io/" target="_blank">electron</a>、
+        <a href="https://github.com/EmergingTechnologyAdvisors/node-serialport" target="_blank">node-serialport</a>等开源软件项目进行搭建。
+        electron是一个使用HTML、CSS和JavaScript进行开发跨平台应用的框架，因此，visual-serial理论上会支持windows（>=window7版本）、macOS以及部分Linux系统，重要的事需要强调一遍：
+        <b>不支持windows XP系统</b>，因为electron已经放弃了对这款古老系统的支持。
+      </p>
+      <p>为什么选择HTML、CSS和JavaScript开发
+        <ol>
+          <li>HTML开发界面简单明了，CSS控制样式功能强大</li>
+          <li>JavaScript是脚本语言，易于扩展，不需要编译，人人都可以根据自己的需求修改或者增加功能</li>
+        </ol>
+      </p>
+      <p>visual-serial的产生受<a href="https://expressjs.com/" target="_blank">express</a>和函数式编程的影响，把中间件和数据流的概念应用于串口数据流处理未尝不是一件好事，
+        因此便有了下面的框图。
+      </p>
+      <figure>
+        <img src="./img/diagram.jpg" />
+        <figcaption>图1. visual-serial的构思图</figcaption>
+      </figure>
+      <figure>
+        <img src="./img/main-ui.jpg" />
+        <figcaption>图2. visual-serial主界面</figcaption>
+      </figure>
+      <h2>中间件及其分类</h2>
+      <img src="./img/add-middleware.jpg" style="float: right;" />
+      <p>
+        在串口通讯应用中，串口数据往往具有一定的格式和晦涩难懂的二进制数据，调试起来会比较麻烦，不过有了中间件做翻译的话，一切问题将迎刃而解。
+        根据应用，中间件大概分为三类：
+        <ol>
+          <li>
+            <dl>
+              <dt>midddleware:</dt>
+              <dd>通用中间件，对数据进行转换，处理</dd>
+            </dl>
+          </li>
+          <li>
+            <dl>
+              <dt>protocol：</dt>
+              <dd>本质上与通用中间件没什么区别，主要是用来处理数据帧的封装，其包含两个方法：encoding和decoding，在发送数据的时候，调用encoding对数据进行打包，例如对数据进行转义，加入校验等功能，
+                在接收数据的时候调用decoding，功能与encoding相对。
+              </dd>
+            </dl>
+          </li>
+          <li>
+            <dl>
+              <dt>widget:</dt>
+              <dd>窗口部件，用来扩展UI界面完成特定交互以及数据可视化的呈现</dd>
+            </dl>
+          </li>
+        </ol>
+        中间件的数量没有限制，可以一个没有，也可以有多个，根据中间件插入的位置，可以分为三类：
+        <ul>
+          <li>前置中间件</li>
+          <li>后置中间件</li>
+          <li>发送中间件</li>
+        </ul>
+        这个分类与功能无关，只是用来设定其所处的位置。
+        中间件的位置很重要，所有中间件最终组成链式调用，前一个中间件对数据进行处理后，会传给下一个中间件，正如图1所示。
+      </p>
+      <h2>中间件示例介绍</h2>
+      <img src="./img/middleware-structure.jpg" style="float: right;" />
+      <p>
+        介绍中间件，最直观的方法当然还是举例说明，下面的几个中间件是visual-serial附带的几个中间件，附带这几个中间件并不是说它常用和通用，仅是作为用户自己编写中间件的参考。
+      </p>
+      <dl>
+        <dt><h4>FF-protocol</h4></dt>
+        <dd>假设有某数据格式规定：数据帧以0xFF开头、0xFF结尾，数据中出现的FF转义为FE 01，FE转义为FE 00，数据末尾增加异或校验和。
+        decoding方法完成的工作包括：检测起始的FF字节，然后开始接收数据并进行转义和计算校验和，直到接收到尾部的FF，此时如果校验和正确，则把数据传给下一个中间件。
+        encoding方法就是对数据增加头尾FF、转义和加入校验和，然后传给下一个中间件。</dd>
+      </dl>
+      <dl>
+        <dt><h4>timeout</h4></dt>
+        <dd>如果数据帧没有具体的格式，无法判断数据的头尾，可以用超时时间来粗略判断帧的结束。如果等待设定的毫秒数内未再收到数据，则把已经收到的数据传给下一个中间件。
+          注意：计算机的计时并不准确，尤其是计算机任务繁重的时候，因此选择这个中间件是个下策。
+        </dd>
+      </dl>
+      <dl>
+        <dt><h4>savetofile</h4></dt>
+        <dd>把经过这个中间件的数据保存到文件中，并继续传递数据至下一个中间件。</dd>
+      </dl>
+      <dl>
+        <dt><h4>characterEncoding</h4></dt>
+        <dd>完成字符串编码的转换，支持多种编码，如UTF8,UTF16,GB18030，因此数据发送和接收可以支持各种字符编码。</dd>
+      </dl>
+      <p>以上这些中间件都仅仅是一个js文件，代码都在100行之内，位置在app/middleware下面</p>
+      <dl>
+        <dt><h4>drawgraph</h4></dt>
+        <dd>这是一个窗口扩展，可将数据按特定类型提取，并画出变化曲线。</dd>
+      </dl>
+      <figure>
+        <img src="./img/drawgraph.jpg" />
+        <figcaption>图3. drawgraph显示单片机传过来的三轴加速度传感器数据</figcaption>
+      </figure>
+      <p>widget是app/middleware中的一个文件夹，其中包括html、css和JavaScript文件，html文件是必须的。</p>
+      <h2>其他功能介绍</h2>
+      <h3>数据显示</h3>
+      <p>数据显示，也就是图1中的display部分，用来做基本的数据显示，其有4种显示方式
+        <ul>
+          <li>RAW-HEX: 把接收到的数据以十六进制的形式显示</li>
+          <li>RAW-STRING: 把接收的数据作为字符串显示</li>
+          <li>ITEM-HEX: 以十六进制条目的形式显示数据，如果前面有protocol中间件或者timeout，则每帧数据显示为一条。</li>
+          <li>ITEM-STRING：以条目的形式显示字符串</li>
+        </ul>
+        还有一个NOT-DISPLAY选项，在数据显示没有重要意义的时候，可以不予显示以提高软件性能。
+      </p>
+      <h3>数据发送</h3>
+      <p>数据发送主要有字符串和十六进制发送两种方式。这些功能比较基础没有可介绍的，值得一提的是，以十六进制发送的时候，可支持多种十六进制格式以及宽松的判断，例如：<br>
+        <code>{0x45, 0x56, 0x89, 0xAB, 0xF2}</code> => <code>45 56 89 AB F2 </code><br>
+        <code>08H 58H 9AH BCH</code> => <code>08 58 9A BC </code><br>
+        <code>0x120x560x8a 9F7C62 3 B 5</code> => <code>12 56 8A 9F 7C 62 03 0B 05 </code><br>
+      </p>
+      <h3>loopback</h3>
+      <p>回环功能，数据不通过串口发送出去，而是传递给接收部分。便于调试</p>
+    </div>
 
-        <!-- Add your site or application content here -->
-        <h1>visual-serial document</h1>
-        <script src="js/vendor/modernizr-3.5.0.min.js"></script>
-        <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
-        <script>window.jQuery || document.write('<script src="js/vendor/jquery-3.2.1.min.js"><\/script>')</script>
-        <script src="js/plugins.js"></script>
-        <script src="js/main.js"></script>
-    </body>
+    <script src="js/vendor/modernizr-3.5.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    <script>window.jQuery || document.write('<script src="js/vendor/jquery-3.2.1.min.js"><\/script>')</script>
+    <script src="js/plugins.js"></script>
+    <script src="js/main.js"></script>
+  </body>
 </html>

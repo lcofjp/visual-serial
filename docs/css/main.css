@@ -96,10 +96,29 @@ textarea {
 /* ==========================================================================
    Author's custom styles
    ========================================================================== */
-
-
-
-
+#main-content {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 10px;
+}
+img {
+    max-width: 100%;
+}
+h1 {
+    text-align: center;
+}
+figcaption {
+    text-align: center;
+    font-weight: bold;
+}
+code {
+    padding: 2px 4px;
+    font-size: 90%;
+    color: #c7254e;
+    background-color: #f9f2f4;
+    border-radius: 4px;
+    word-break: break-all;
+}
 
 
 
