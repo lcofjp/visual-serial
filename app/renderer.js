@@ -401,7 +401,7 @@ function DOMEventInit() {
         obj.name = tempMiddlewareInstance.name;
         obj.type = tempMiddlewareInstance.type;
 
-        const modalPath = path.join('file://', __dirname, tempMiddlewareInstance.path);
+        const modalPath = path.join('file://', tempMiddlewareInstance.path);
         let win = new BrowserWindow({frame: false})
         win.on('close', function () { obj.win = null; deleteInstanceByCuid(obj.cuid, true); })
         win.loadURL(modalPath)
@@ -550,11 +550,12 @@ function scanMiddlewareDir(dirname) {
 }
 // import middleware => [mwConstructor1, Constructor2...]
 function importMiddleware() {
+  const middlewareDir = path.join(__dirname, 'middleware');
   // middlewareFactoryMap
-  const mws = scanMiddlewareDir('./middleware');
+  const mws = scanMiddlewareDir(middlewareDir);
   const cons = _.map(v => {
     if (v.type === 'js') {
-      const factory = require('./' + path.join('./middleware', v.name));
+      const factory = require('./'+path.join('middleware', v.name));
       return {
         factory,
         name: path.basename(v.name, path.extname(v.name)),
@@ -563,7 +564,7 @@ function importMiddleware() {
     }
     else if (v.type === 'dir') {
       return {
-        path: path.join('./middleware', v.name, 'index.html'),
+        path: path.join(middlewareDir, v.name, 'index.html'),
         name: v.name,
         type: 'widget',
       }
