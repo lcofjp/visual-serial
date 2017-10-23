@@ -340,11 +340,11 @@ function DOMEventInit() {
         const cuid = e.target.parentElement.firstElementChild.dataset['cuid'];
         deleteInstanceByCuid(cuid);
         $(lineItem).detach();
-        applyMiddleware();
       } else if ($target.hasClass('icon-pencil')) { //编辑中间件
         const cuid = e.target.previousElementSibling.dataset['cuid'];
         middlewareDoModal(cuid);
       }
+      applyMiddleware();
     }
   });
 
@@ -368,7 +368,7 @@ function DOMEventInit() {
     middlewareDoModal();
   });
 
-  // 中间件弹出框”确定“按钮 单击事件处理程序
+  // 中间件弹出框"确定"按钮 单击事件处理程序
   $('#middleware-popup .ok').click(e => {
     const operation = document.getElementById('middleware-popup').dataset['operation'];
     
