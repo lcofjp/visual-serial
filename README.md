@@ -1,3 +1,5 @@
+## 基本功能介绍
+基本功能介绍：[https://lcofjp.github.io/visual-serial/](https://lcofjp.github.io/visual-serial/)
 ## 如何调试
 运行软件，通过快捷键打开调试窗口(windows/linux: <kbd>ctrl+shift+i</kbd>,macOS: <kbd>command+option+i</kbd>)
 
