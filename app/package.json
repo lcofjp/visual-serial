@@ -1,6 +1,6 @@
 {
   "name": "visual-serial",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "a tool for anlys serial communication data",
   "main": "main.js",
   "scripts": {
