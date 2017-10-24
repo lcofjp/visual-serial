@@ -33,7 +33,7 @@
           <li>JavaScript是脚本语言，易于扩展，不需要编译，人人都可以根据自己的需求修改或者增加功能（JavaScript有多难？肯定没有C++难！）</li>
         </ol>
       </p>
-      <p>visual-serial的产生受<a href="https://expressjs.com/" target="_blank">express</a>和函数式编程的影响，把中间件和数据流的概念应用于串口数据流处理未尝不是一件好事，
+      <p>visual-serial的诞生受<a href="https://expressjs.com/" target="_blank">express</a>和函数式编程的影响，把中间件和数据流的概念应用于串口数据流处理未尝不是一件好事，
         因此便有了下面的框图。
       </p>
       <figure>
@@ -66,8 +66,8 @@
           <li>
             <dl>
               <dt>protocol：</dt>
-              <dd>本质上与通用中间件没什么区别，主要是用来处理数据帧的封装，其包含两个方法：encoding和decoding，在发送数据的时候，调用encoding对数据进行打包，例如对数据进行转义，加入校验等功能，
-                在接收数据的时候调用decoding，功能与encoding相对。
+              <dd>本质上与通用中间件没什么区别，主要是用来处理数据帧的封装，其包含两个方法：encode和decode，在发送数据的时候，调用encode对数据进行打包，例如对数据进行转义，加入校验等功能，
+                在接收数据的时候调用decode，功能与encodes相对。
               </dd>
             </dl>
           </li>
@@ -95,8 +95,8 @@
       <dl>
         <dt><h4>FF-protocol</h4></dt>
         <dd>假设有某数据格式规定：数据帧以0xFF开头、0xFF结尾，数据中出现的FF转义为FE 01，FE转义为FE 00，数据末尾增加异或校验和。
-        decoding方法完成的工作包括：检测起始的FF字节，然后开始接收数据并进行转义和计算校验和，直到接收到尾部的FF，此时如果校验和正确，则把数据传给下一个中间件。
-        encoding方法就是对数据增加头尾FF、转义和加入校验和，然后传给下一个中间件。示例：<br>
+        decode方法完成的工作包括：检测起始的FF字节，然后开始接收数据并进行转义和计算校验和，直到接收到尾部的FF，此时如果校验和正确，则把数据传给下一个中间件。
+        encode方法就是对数据增加头尾FF、转义和加入校验和，然后传给下一个中间件。示例：<br>
         <code>56 A2 D3 91</code>==encode==><code>FF 56 A2 D3 91 B6 FF</code><br>
         <code>FF 56 A2 D3 91 B6 FF</code>==decode==><code>56 A2 D3 91</code><br>
       </dd>
