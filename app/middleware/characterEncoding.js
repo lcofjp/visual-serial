@@ -41,6 +41,10 @@ function characterEncodeingConversion() {
     return [
       { name: 'from', label: '源编码', type: 'select', values: supportedEncodings },
       { name: 'to', label: '目标编码', type: 'select', values: supportedEncodings },
+      {
+        type: 'text', content: `<span style="color: red;">注意：</span>只有对一串完整的数据进行编码转换才有意义，对离散的字节单位是无法正确编解码的，
+        因此在使用此中间件前，要使用protocol或者timeout中间件对数据进行处理。`,
+      },
     ];
   }
   function config(options) {
