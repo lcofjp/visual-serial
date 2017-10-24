@@ -10,7 +10,7 @@ const _ = require('lodash/fp');
 const R = require('ramda');
 const cuid = require('cuid');
 const { ipcMain, dialog, BrowserWindow } = require('electron').remote;
-const { clipboard } = require('electron');
+const { clipboard, shell } = require('electron');
 
 // 全局变量
 let serial = null; // 串口实例
@@ -491,23 +491,6 @@ function DOMEventInit() {
   document.getElementById('set-dtr').addEventListener('click', setRTSDTR.bind(null, 'dtr'));
 }
 
-// window / document 全局事件
-document.addEventListener('DOMContentLoaded', function () {
-  $('.titlebar-close').click(e=>{
-    window.close();
-  });
-  rxTextArea = document.querySelector('#textarea-rx');
-  basicSetupInit();
-  DOMEventInit();
-
-  let height = window.innerHeight - 160 - 24 - 10 - 44;
-  $('#rx-display-area').css('height', height);
-
-  importMiddleware();
-  applyMiddleware();
-  updateDOMSerialChange(false);
-});
-
 // 消息提示
 function showMessage(title='Message', content='') {
   $('#shadow-mask').css('display', 'flex');
@@ -840,3 +823,36 @@ function statusbarSet(item, content) {
     $('footer [id$="count"]').text('0');
   }
 }
+
+// window / document 全局事件
+document.addEventListener('DOMContentLoaded', function () {
+  $('.titlebar-close').click(e=>{
+    window.close();
+  });
+  rxTextArea = document.querySelector('#textarea-rx');
+  basicSetupInit();
+  DOMEventInit();
+
+  let height = window.innerHeight - 160 - 24 - 10 - 44;
+  $('#rx-display-area').css('height', height);
+
+  importMiddleware();
+  applyMiddleware();
+  updateDOMSerialChange(false);
+
+  const packageStr = fs.readFileSync('./package.json', 'utf8');
+  const packageObj = JSON.parse(packageStr);
+  const version = packageObj.version;
+  $('#version').text(version);
+  $.getJSON('https://lcofjp.github.io/visual-serial/version.json')
+    .done(data => {
+      if (data.latest_version !== version) {
+        $('#version').html(`${version}(<span id="download-latest" 
+        style="cursor: pointer; color: blue;"></span>)`);
+        $('#download-latest').text(`下载${data.latest_version}`).show().click(e => {
+          shell.openExternal("https://www.github.com/lcofjp/visual-serial/");          
+        });
+      }
+    });
+
+});
