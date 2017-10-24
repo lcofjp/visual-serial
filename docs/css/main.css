@@ -121,6 +121,7 @@ code {
 }
 pre > code {
     display: block;
+    word-break: break-all;
 }
 
 
