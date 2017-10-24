@@ -119,6 +119,9 @@ code {
     border-radius: 4px;
     word-break: break-all;
 }
+pre > code {
+    display: block;
+}
 
 
 

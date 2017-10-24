@@ -20,16 +20,17 @@
     <![endif]-->
     <div id="main-content">
       <h1>visual-serial功能介绍</h1>
+      <p>visual-serial是一款开源的串口应用软件，其具有高度的可扩展性，旨在吸收广大电工们的思想精华与最佳实践，共同打造一款具有一套常用基本功能的便民利器。</p>
       <p>
         visual-serial基于<a href="https://electron.atom.io/" target="_blank">electron</a>、
         <a href="https://github.com/EmergingTechnologyAdvisors/node-serialport" target="_blank">node-serialport</a>等开源软件项目进行搭建。
-        electron是一个使用HTML、CSS和JavaScript进行开发跨平台应用的框架，因此，visual-serial理论上会支持windows（>=window7版本）、macOS以及部分Linux系统，重要的事需要强调一遍：
+        electron是一个使用HTML、CSS和JavaScript/Node.js开发跨平台应用的框架，因此，visual-serial理论上会支持windows（>=window7版本）、macOS以及部分Linux系统，重要的事需要强调一遍：
         <b>不支持windows XP系统</b>，因为electron已经放弃了对这款古老系统的支持。
       </p>
       <p>为什么选择HTML、CSS和JavaScript开发
         <ol>
           <li>HTML开发界面简单明了，CSS控制样式功能强大</li>
-          <li>JavaScript是脚本语言，易于扩展，不需要编译，人人都可以根据自己的需求修改或者增加功能</li>
+          <li>JavaScript是脚本语言，易于扩展，不需要编译，人人都可以根据自己的需求修改或者增加功能（JavaScript有多难？肯定没有C++难！）</li>
         </ol>
       </p>
       <p>visual-serial的产生受<a href="https://expressjs.com/" target="_blank">express</a>和函数式编程的影响，把中间件和数据流的概念应用于串口数据流处理未尝不是一件好事，
@@ -44,6 +45,13 @@
         <figcaption>图2. visual-serial主界面</figcaption>
       </figure>
       <h2>中间件及其分类</h2>
+      <p>中间件的本质就是一个函数，数据以参数的形式传入函数，函数对数据进行预处理和加工，然后传递给下一个中间件进行处理，其形式如：</p>
+      <pre><code>function entry(buf, serial, next) {
+  // 对buf进行处理
+  // 传递给下一个中间件的buf可以是一个新生成的buf，也可以把输入的buf原封不动传给下一级
+  next(buf, serial);
+}</code></pre>
+      
       <img src="./img/add-middleware.jpg" style="float: right;" />
       <p>
         在串口通讯应用中，串口数据往往具有一定的格式和晦涩难懂的二进制数据，调试起来会比较麻烦，不过有了中间件做翻译的话，一切问题将迎刃而解。
@@ -88,7 +96,10 @@
         <dt><h4>FF-protocol</h4></dt>
         <dd>假设有某数据格式规定：数据帧以0xFF开头、0xFF结尾，数据中出现的FF转义为FE 01，FE转义为FE 00，数据末尾增加异或校验和。
         decoding方法完成的工作包括：检测起始的FF字节，然后开始接收数据并进行转义和计算校验和，直到接收到尾部的FF，此时如果校验和正确，则把数据传给下一个中间件。
-        encoding方法就是对数据增加头尾FF、转义和加入校验和，然后传给下一个中间件。</dd>
+        encoding方法就是对数据增加头尾FF、转义和加入校验和，然后传给下一个中间件。示例：<br>
+        <code>56 A2 D3 91</code>==encode==><code>FF 56 A2 D3 91 B6 FF</code><br>
+        <code>FF 56 A2 D3 91 B6 FF</code>==decode==><code>56 A2 D3 91</code><br>
+      </dd>
       </dl>
       <dl>
         <dt><h4>timeout</h4></dt>
@@ -107,7 +118,7 @@
       <p>以上这些中间件都仅仅是一个js文件，代码都在100行之内，位置在app/middleware下面</p>
       <dl>
         <dt><h4>drawgraph</h4></dt>
-        <dd>这是一个窗口扩展，可将数据按特定类型提取，并画出变化曲线。</dd>
+        <dd>这是一个窗口扩展，可将数据按特定类型提取，并画出变化曲线。其中BE为设置大端模式，min和max设置绘制曲线时的最小和最大取值范围，不设置为自适应范围。</dd>
       </dl>
       <figure>
         <img src="./img/drawgraph.jpg" />
