@@ -402,7 +402,7 @@ function DOMEventInit() {
         obj.type = tempMiddlewareInstance.type;
 
         const modalPath = path.join('file://', tempMiddlewareInstance.path);
-        let win = new BrowserWindow({frame: false})
+        let win = new BrowserWindow();
         win.on('close', function () { obj.win = null; deleteInstanceByCuid(obj.cuid, true); })
         win.loadURL(modalPath)
         win.show();

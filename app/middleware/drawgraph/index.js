@@ -137,7 +137,7 @@ function readLineProperties(tr) {
 function resizeCanvas() {
   const vw = document.getElementById('canvas');
   const width = window.innerWidth - document.getElementById('sidebar').clientWidth - 1;
-  const height = window.innerHeight - 48;
+  const height = window.innerHeight - 24;
   document.getElementById('canvas-info').innerHTML = `|canvas info: width:${width},height:${height}|`;
   vw.width = width;
   vw.height = height;
