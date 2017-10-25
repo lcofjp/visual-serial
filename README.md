@@ -3,6 +3,8 @@
 ## 下载
 百度云下载地址：[https://pan.baidu.com/s/1mhAt4Ju](https://pan.baidu.com/s/1mhAt4Ju)
 
+注意：Linux系统可能需要root权限运行才能正常打开串口。
+
 
 ## 如何从源代码运行软件
 
