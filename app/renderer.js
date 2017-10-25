@@ -840,7 +840,7 @@ document.addEventListener('DOMContentLoaded', function () {
   applyMiddleware();
   updateDOMSerialChange(false);
 
-  const packageStr = fs.readFileSync('./package.json', 'utf8');
+  const packageStr = fs.readFileSync(path.join(__dirname, 'package.json'), 'utf8');
   const packageObj = JSON.parse(packageStr);
   const version = packageObj.version;
   $('#version').text(version);
