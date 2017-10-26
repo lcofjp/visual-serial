@@ -17,14 +17,13 @@
 * Git: `git clone git@github.com:lcofjp/visual-serial.git`
 
 ### 3. 安装依赖包
-* 进入代码目录：`cd visual-serial/app`
+* 进入代码目录：`cd visual-serial`
 * 执行命令：`npm install`
 
 ### 4. 编译serialport模块 (需要有C++编译器)
 * 执行命令: `./node_modules/.bin/electron-rebuild`
 
 ### 5. 运行程序
-* 切换到`visual-serial/app`目录
 * 执行命令：`npm start`
 
 ## 如何调试
@@ -38,3 +37,4 @@ QQ群：12602287
 ### 致谢：
 - 感谢网友strong161为本项目捐赠30E金币
 - 感谢网友elvike资助500RMB
+- 感谢网友freebsder，shinykongcn，RCSN，皈依，copperchen，qwerghf的资助
