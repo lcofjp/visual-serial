@@ -139,6 +139,10 @@ function handleOpenClick(e) {
     const options = getBasicOptions();
     const devName = options.path;
     delete options.path;
+    if (!devName) {
+      $btn.prop('disabled', false);
+      return;
+    }
     serial = new SerialPort(devName, options);
     $btn.removeClass('btn-default').addClass('btn-warning').html('打开中');
     serial.open(err=>{
