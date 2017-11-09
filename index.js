@@ -23,6 +23,7 @@ import { FormattedMessage } from 'react-intl';
 const store = configureStore(window.__INITIAL_STATE__);
 
 import SerialWidget from './src/js/serial/serialWidget';
+import onWindowResize from './src/js/actions';
 
 // Import Routes
 // import routes from './routes';
@@ -68,4 +69,7 @@ $(() => {
     <App />,
     document.getElementById('root')
   );
+  window.addEventListener('resize', e=>{
+    store.dispatch(onWindowResize(e));
+  });
 });

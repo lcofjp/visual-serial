@@ -2,6 +2,18 @@
  * Root Reducer
  */
 import { combineReducers } from 'redux';
+import { WINDOW_RESIZE } from './actions';
+
+
+const windowSize = (state = { height: 400 }, action) => {
+  switch (action.type) {
+    case WINDOW_RESIZE: {
+      return {height: action.height};
+    }
+    default:
+      return state;
+  }
+};
 
 // Import Reducers
 // import app from './modules/App/AppReducer';
@@ -12,5 +24,6 @@ import intl from './Intl/IntlReducer';
 export default combineReducers({
   // app,
   // posts,
+  windowSize,
   intl,
 });
