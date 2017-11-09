@@ -1,0 +1,22 @@
+export default {
+  locale: 'zh',
+  messages: {
+    serial: '串口',
+    doc: '文档',
+    device: '设备',
+    baudrate: '波特率',
+    databit: '数据位',
+    stopbit: '停止位',
+    parity: '校验位',
+    flowcontrol: '流控制',
+    open: '打开',
+    close: '关闭',
+    send: '发送',
+    loopback: 'loopback',
+    hex: '十六进制',
+    middleware: '中间件',
+    preMiddleware: '前置中间件',
+    postMiddleware: '后置中间件',
+    sendMiddleware: '发送中间件',
+  },
+};

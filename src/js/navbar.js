@@ -1,0 +1,53 @@
+import React from 'react';
+import PropTypes from 'prop-types';
+import { NavLink } from 'react-router-dom';
+import { FormattedMessage } from 'react-intl';
+import { connect } from 'react-redux';
+import { switchLanguage } from './Intl/IntlActions';
+import { withRouter } from 'react-router';
+
+class NavBar extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleSwitchLanguage = this.handleSwitchLanguage.bind(this);
+    this.handleChangeLocation = this.handleChangeLocation.bind(this);
+    this.state = {key: '0.1234567'};
+  }
+  handleSwitchLanguage(e) {
+    const lang = e.target.value;
+    this.props.dispatch(switchLanguage(lang));
+  }
+  handleChangeLocation(e) {
+    // this.setState({key: Math.random().toString()});
+    // this.forceUpdate();
+  }
+  render() {
+    console.log('render');
+    return (
+      <ul className="nav nav-tabs">
+        <li className="nav-item">
+          <NavLink replace className="nav-link" activeClassName="active" to="/serial"><FormattedMessage id="serial" /></NavLink>
+        </li>
+        <li className="nav-item"> 
+          <NavLink replace className="nav-link" activeClassName="active" to="/docs"><FormattedMessage id="doc" /></NavLink>
+        </li>
+        <li className="nav-item push-right">
+          <div className="push-right">
+            <label>Language:</label>
+            <select onChange={this.handleSwitchLanguage.bind(this)} value={this.props.locale}>
+            <option value="en">English</option>
+            <option value="zh">中文</option>
+            </select>
+          </div>
+          </li>
+        </ul>
+    );
+  }
+}
+// Retrieve data from store as props
+function mapStateToProps(store) {
+  return {
+    locale: store.intl.locale,
+  };
+}
+export default withRouter(connect(mapStateToProps)(NavBar));

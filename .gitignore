@@ -2,3 +2,14 @@ node_modules
 test.html
 test.js
 .DS_Store
+resources
+internals
+flow-typed
+dll
+app
+test
+*.map
+webpack.config.*
+main.html
+index.*.js
+main.1.css

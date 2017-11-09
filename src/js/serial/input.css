@@ -1,0 +1,14 @@
+.input-widget {
+  width: 100%;
+  height: 200px;
+  border: 1px solid red;
+}
+.input {
+  display: grid;
+  grid-template-columns: 1fr 100px;
+}
+
+.input button {
+  width: 100px;
+  height: 100px;
+}

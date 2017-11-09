@@ -1,0 +1,22 @@
+export default {
+  locale: 'en',
+  messages: {
+    serial: 'Serial',
+    doc: 'Docs',
+    device: 'device',
+    baudrate: 'baudrate',
+    databit: 'databit',
+    stopbit: 'stopbit',
+    parity: 'parity',
+    flowcontrol: 'flow control',
+    open: 'open',
+    close: 'close',
+    send: 'send',
+    loopback: 'loopback',
+    hex: 'Hex',
+    middleware: 'middleware',
+    preMiddleware: 'pre-middleware',
+    postMiddleware: 'post-middleware',
+    sendMiddleware: 'send-middleware',
+  },
+};

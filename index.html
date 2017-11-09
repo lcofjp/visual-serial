@@ -1,140 +1,23 @@
 <!DOCTYPE html>
 <html>
 
-<head>
-  <title>visual-serial</title>
+  <head>
+    <title>visual-serial</title>
 
-  <!-- Stylesheets -->
-  <link rel="stylesheet" href="./assets/css/photon.min.css">
-  <link rel="stylesheet" href="./main.css">
+    <!-- Stylesheets -->
+    <!-- <link rel="stylesheet" href="./assets/css/photon.min.css"> -->
+    <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./main.css">
 
-  <!-- Javascript -->
-  <script src="./renderer.js" charset="utf-8"></script>
-</head>
+    
+  </head>
 
-<body>
-  <div class="titlebar"></div>
-  <div id="sidebar">
-    <fieldset>
-      <legend>基本设置</legend>
-      <div class="basic-setup">
-        <div class="column1">设备：</div><select id="device-name-select" class="column2"><option>Not found</option></select>
-        <div class="column1">波特率：</div><select id="baudrate-select" class="column2"><option>9600</option></select>
-        <div class="column1">数据位：</div><select id="databits-select" class="column2"></select>
-        <div class="column1">停止位：</div><select id="stopbits-select" class="column2"><option>8</option></select>
-        <div class="column1">校验位：</div><select id="parity-select" class="column2"><option>1</option></select>
-        <div class="column1">流控制：</div><select id="flowcontrol-select" class="column2"><option>无</option></select>
-        <button id="refresh-device" class="column1 btn btn-mini btn-default">刷新<span class="icon icon-arrows-ccw"></span></button>
-        <button id="btn-open" class="btn btn-mini btn-default">打开</button>
-      </div>
-    </fieldset>
-    <fieldset class="pre-middleware-fs">
-      <legend>前置中间件</legend>
-      <div class="list-container">
-        <!-- <div class="middleware-line">
-          <div class="middleware-name" data-cuid="xxxyyy">FF-Protocal</div>
-          <span class="icon icon-pencil"></span>
-          <span class="icon icon-down-circled"></span>
-          <span class="icon icon-up-circled"></span>
-          <span class="icon icon-cancel-squared"></span>
-        </div> -->
-      </div>
-      <button class="btn btn-mini btn-primary add-middleware" data-type="pre-middleware">Add</button>
-    </fieldset>
-    <fieldset class="post-middleware-fs">
-      <legend>后置中间件</legend>
-      <div class="list-container"></div>
-      <button class="btn btn-mini btn-primary add-middleware" data-type="post-middleware">Add</button>
-    </fieldset>
-    <fieldset class="send-middleware-fs">
-      <legend>发送中间件</legend>
-      <div class="list-container"></div>
-      <button class="btn btn-mini btn-primary add-middleware" data-type="send-middleware">Add</button>
-    </fieldset>
-  </div>
+  <body>
+    <div id="root">
 
-  <div id="content">
-    <div id="rx-region">
-      <div>接收区<span>(ITEM方式单击条目复制,RAW方式选择后ctrl+c/command+c复制)</span></div>
-      <div id="rx-content">
-        <div id="rx-display-area">
-          <textarea id="textarea-rx" placeholder="data will be display here"></textarea>
-          <div id="display-list" style="display: none;">
-          </div>
-        </div>
-        <div id="rx-display-setup">
-          <label for="display-format-select">显示方式:</label>
-          <select id="display-format-select">
-            <option>ITEM-HEX</option>
-            <option>ITEM-STRING</option>
-            <option selected>RAW-HEX</option>
-            <option>RAW-STRING</option>
-            <option>NOT-DISPLAY</option>
-          </select>
-          <button id="rx-clear" class="btn btn-mini btn-default">清空</button>
-        </div>
-      </div>
     </div>
-    <div id="tx-region">
-      <div>发送区</div>
-      <div id="tx-content">
-        <textarea placeholder="
-        https://github.com/lcofjp/visual-serial
-        send string: hello world
-        send hex: {0x12, 0x34, 0xab} or 12 34 ab or 12H ABH
-        "></textarea>
-        <button id="btn-send-data" class="btn btn-mini btn-primary">发送</button>
-      </div>
-      <div id="tx-setup">
-        <label title="在输入区域敲入回车即可发送\n,如果要发送\r\n，则勾选此选项，(十六进制下此选项无效)">
-          <input type="checkbox" id="insert-return" />
-          (\n<span class="icon icon-right"></span>\r\n)
-        </label>
-        <label><input type="checkbox" id="send-hex" />十六进制</label>
-        <label><input type="checkbox" id="send-decimal" disabled />十进制</label>
-        <label><input type="checkbox" id="send-by-script" disabled />脚本</label>
-        <label><input type="checkbox" id="set-rts" />RTS</label>
-        <label><input type="checkbox" id="set-dtr" />DTR</label>
-        <button id="btn-loopback" class="btn btn-mini btn-primary">loopback</button>
-      </div>
-    </div>
-  </div>
-
-  <footer class="toolbar toolbar-footer">
-    <p>
-      串口状态：
-      <span id="serial-status">关闭</span>
-      接收字节数：
-      <span id="rx-byte-count">0</span>
-      接收条目数：
-      <span id="rx-item-count">0</span>
-      发送字节数：
-      <span id="tx-byte-count">0</span>
-      软件版本:
-      <span id="version"></span>
-    </p>
-  </footer>
-
-  <div id="shadow-mask">
-    <div id="middleware-popup" class="popup modal" data-operation="add-or-modify">
-      <div class="header"><p class="title">middleware select</p></div>
-      <div class="content">
-        <div id="middleware-select"></div>
-        <div id="middleware-options"></div>
-      </div>
-      <div class="footer">
-        <button class="btn btn-default cancel">取消</button>
-        <button class="btn btn-primary ok">确定</button>
-      </div>
-    </div>
-    <div id="message-popup" class="popup modal" style="display: none;">
-      <div class="header"><p class="title">Message</p></div>
-      <div class="content">content</div>
-      <div class="footer">
-        <button class="btn btn-primary ok">确定</button>
-      </div>
-    </div>
-  </div>
-</body>
+    <!-- Javascript -->
+    <script src="./index.out.js" charset="utf-8"></script>
+  </body>
 
 </html>

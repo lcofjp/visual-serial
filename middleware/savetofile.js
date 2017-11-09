@@ -69,15 +69,15 @@ function save2file() {
     return {
       filepath,
       filetype,
-      timestamp: timestamp?['timestamp']:[],
-    }
+      timestamp: timestamp ? ['timestamp'] : [],
+    };
   }
   return {
     entry,
     getOptions,
     config,
     getConfig,
-  }
+  };
 }
 save2file.type = 'middleware';
 
