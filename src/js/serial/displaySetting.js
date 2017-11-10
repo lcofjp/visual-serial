@@ -1,16 +1,24 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { FormattedMessage } from 'react-intl';
 
 class DisplaySetting extends React.Component {
   render() {
     return (
-      <div>
-        <label>display mode:</label>
-        <select>
-          <option>raw</option>
-          <option>item</option>
-        </select>
-        <button>clear</button>
+      <div style={{display: 'flex'}}>
+        <label>
+          <FormattedMessage id="displayMode" />:
+          <select>
+            <option value="rawHex"><FormattedMessage id="rawHex" /></option>
+            <option value="rawStr"><FormattedMessage id="rawStr" /></option>
+            <option value="itemHex"><FormattedMessage id="itemHex" /></option>
+            <option value="itemStr"><FormattedMessage id="itemStr" /></option>
+            <option value="none"><FormattedMessage id="displayNone" /></option>
+          </select>
+        </label>
+        <button className="btn btn-sm btn-primary" style={{marginLeft: 'auto'}}>
+          <FormattedMessage id="clear"></FormattedMessage>
+        </button>
       </div>
     )
   }

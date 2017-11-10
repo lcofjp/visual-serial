@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { FormattedMessage, FormattedDate } from 'react-intl';
 import './input.css';
 
 class Input extends React.Component {
@@ -9,8 +10,13 @@ class Input extends React.Component {
         <div className="input">
           <textarea></textarea>
           <div>
-            <button className="btn btn-primary">send</button>
-            <label><input type="checkbox" />loopback</label>
+            <button className="btn btn-primary">
+              <FormattedMessage id="send"></FormattedMessage>
+            </button>
+            <label>
+              <input type="checkbox" />
+              <FormattedMessage id="loopback" />
+            </label>
           </div>
         </div>
         <div className="send-setting">send settings</div>

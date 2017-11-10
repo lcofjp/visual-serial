@@ -8,15 +8,13 @@ class Display extends React.Component {
   render() {
     const displayElement = this.props.displayMode === 'raw' ? 
       <textarea></textarea> :
-      <div style={{width: "100%", backgroundColor: 'green'}}></div>;
+      <div style={{width: "100%", backgroundColor: '#DDFFDD'}}></div>;
     return (
       <div className="display-wrapper">
-        {/* <div className="display" style={{ backgroundColor: 'yellow'}}> */}
-          <div id="display-area" style={{ height: this.props.height }}>
-            {displayElement}
-          </div>
-          <DisplaySetting />
-        {/* </div> */}
+        <div id="display-area" style={{ height: this.props.height }}>
+          {displayElement}
+        </div>
+        <DisplaySetting />
       </div>
     )
   }

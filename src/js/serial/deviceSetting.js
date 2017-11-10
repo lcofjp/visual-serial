@@ -36,7 +36,7 @@ class DeviceSetting extends React.Component {
       <div id="device-setting">
         <label><FormattedMessage id="device" />:</label>
         <select value={this.state.device} data-name="device" onChange={this.valueChange}>
-          <option>COM1</option>
+          <option>COM1 this is a super long strings and some text</option>
         </select>
         <label><FormattedMessage id="baudrate" />:</label>
         <select value={this.state.baudrate} data-name="baudrate" onChange={this.valueChange}>
@@ -58,6 +58,14 @@ class DeviceSetting extends React.Component {
         <select value={this.state.flowcontrol} data-name="flowcontrol" onChange={this.valueChange}>
           {generateOptions(flowControls)}
         </select>
+        <div>
+          <button className="btn btn-sm btn-default">
+            <FormattedMessage id="refresh" />
+          </button>
+          <button className="btn btn-sm btn-primary">
+            <FormattedMessage id="open" />
+          </button>
+        </div>
       </div>
     );
   }

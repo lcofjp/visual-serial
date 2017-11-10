@@ -4,6 +4,7 @@
 
 #display-area {
   width: 100%;
+  overflow: auto;
 }
 #display-area > * {
   height: 100%;

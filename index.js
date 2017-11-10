@@ -70,6 +70,7 @@ $(() => {
     document.getElementById('root')
   );
   window.addEventListener('resize', e=>{
-    store.dispatch(onWindowResize(e));
+    store.dispatch(onWindowResize());
   });
+  store.dispatch(onWindowResize());
 });

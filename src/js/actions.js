@@ -1,5 +1,5 @@
 export const WINDOW_RESIZE = 'windows_resize';
-export const onWindowResize = (e) => {
+export const onWindowResize = () => {
   return {
     type: WINDOW_RESIZE,
     height: window.innerHeight,

@@ -22,25 +22,25 @@ class NavBar extends React.Component {
     // this.forceUpdate();
   }
   render() {
-    console.log('render');
     return (
-      <ul className="nav nav-tabs">
-        <li className="nav-item">
-          <NavLink replace className="nav-link" activeClassName="active" to="/serial"><FormattedMessage id="serial" /></NavLink>
-        </li>
-        <li className="nav-item"> 
-          <NavLink replace className="nav-link" activeClassName="active" to="/docs"><FormattedMessage id="doc" /></NavLink>
-        </li>
-        <li className="nav-item push-right">
-          <div className="push-right">
-            <label>Language:</label>
+      <div>
+        <ul className="nav nav-tabs">
+          <li className="nav-item">
+            <NavLink replace className="nav-link" activeClassName="active" to="/serial"><FormattedMessage id="serial" /></NavLink>
+          </li>
+          <li className="nav-item"> 
+            <NavLink replace className="nav-link" activeClassName="active" to="/docs"><FormattedMessage id="doc" /></NavLink>
+          </li>        
+          <div style={{marginLeft: 'auto', marginRight: '10px', alignSelf: 'center', display: "inline-block"}} >
+            <label style={{margin: 'auto'}}>Language:</label>
             <select onChange={this.handleSwitchLanguage.bind(this)} value={this.props.locale}>
             <option value="en">English</option>
             <option value="zh">中文</option>
             </select>
           </div>
-          </li>
         </ul>
+
+      </div>
     );
   }
 }
