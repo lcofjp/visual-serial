@@ -77,16 +77,16 @@ html, body {
 
 .middleware-name {
   width: 85%;
-  height: 1.6em;
-  margin: 0 10px;
-  display: inline-block;
+  /* height: 1.6em; */
+  margin: 0 0 0 10px;
+  /* display: inline-block; */
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 .middleware-delete {
   float: right;
-  font-size: 1em;
+  /* font-size: 1em; */
   margin-right: 5px;
 }
 .middleware-delete:hover {

@@ -8,6 +8,17 @@
 }
 
 .input button {
-  width: 100px;
+  width: 100%;
   height: 100px;
+}
+
+.input > div {
+  padding: 0 2px;
+}
+
+.send-setting {
+  display: flex;
+}
+.send-setting > * {
+  margin: 0 5px;
 }

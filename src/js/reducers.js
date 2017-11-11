@@ -18,12 +18,14 @@ const windowSize = (state = { height: 400 }, action) => {
 // Import Reducers
 // import app from './modules/App/AppReducer';
 // import posts from './modules/Post/PostReducer';
+import serial from './serial/serialReducer'
 import intl from './Intl/IntlReducer';
 
 // Combine all reducers into one root reducer
 export default combineReducers({
   // app,
   // posts,
+  serial,
   windowSize,
   intl,
 });

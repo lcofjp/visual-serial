@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import R from 'ramda';
+import { settingChangeAction, refreshDeviceAction } from './serialActions';
 
 const baudRates = [9600,115200,38400,57600,19200,110,300,1200,2400,4800,14400,230400,921600];
 const dataBits = [8,7,6,5];
@@ -23,20 +24,31 @@ class DeviceSetting extends React.Component {
       baudrate: 115200,
       stopbit: 1,
       parity: 'none',
-      flowcontrol: 'none'
+      flowcontrol: 'none',
+      ...this.props.setting,
     }
     this.valueChange = this.valueChange.bind(this);
+    this.refreshDevice = this.refreshDevice.bind(this);
+  }
+  componentDidMount() {
+    this.props.dispatch(refreshDeviceAction());
+  }
+  refreshDevice() {
+    this.props.dispatch(refreshDeviceAction());
   }
   valueChange(e) {
     const field = e.target.dataset['name'];
-    this.setState({...this.state, [field]: e.target.value})
+    this.setState({...this.state, [field]: e.target.value});
+    this.props.dispatch(settingChangeAction({...this.state, [field]: e.target.value}));
   }
   render() {
     return (
       <div id="device-setting">
         <label><FormattedMessage id="device" />:</label>
         <select value={this.state.device} data-name="device" onChange={this.valueChange}>
-          <option>COM1 this is a super long strings and some text</option>
+          {this.props.portList.map( name => {
+            return (<option key={name} value={name}>{name}</option>);
+          })}
         </select>
         <label><FormattedMessage id="baudrate" />:</label>
         <select value={this.state.baudrate} data-name="baudrate" onChange={this.valueChange}>
@@ -59,7 +71,7 @@ class DeviceSetting extends React.Component {
           {generateOptions(flowControls)}
         </select>
         <div>
-          <button className="btn btn-sm btn-default">
+          <button onClick={this.refreshDevice} className="btn btn-sm btn-primary">
             <FormattedMessage id="refresh" />
           </button>
           <button className="btn btn-sm btn-primary">
@@ -71,4 +83,7 @@ class DeviceSetting extends React.Component {
   }
 }
 
-export default DeviceSetting;
+function mapStateToProps(state) {
+  return {setting: state.serial.setting, portList: state.serial.portList};
+}
+export default connect(mapStateToProps)(DeviceSetting);

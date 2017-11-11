@@ -19,7 +19,18 @@ class Input extends React.Component {
             </label>
           </div>
         </div>
-        <div className="send-setting">send settings</div>
+        <div className="send-setting">
+          <label><input type="checkbox" />末尾加\r\n</label>
+          <label><input type="checkbox" /><FormattedMessage id="hex" /></label>
+          <div style={{display: "inline-block"}}>
+            <label><input type="checkbox" />脚本</label>
+            <button>load</button>
+            <button>start</button>
+            <button>stop</button>
+          </div>
+          <label><input type="checkbox" />RTS</label>
+          <label><input type="checkbox" />DTR</label>
+        </div>
       </div>);
   }
 }

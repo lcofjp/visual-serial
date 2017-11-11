@@ -42,7 +42,20 @@ import onWindowResize from './src/js/actions';
 // }
 
 const Docs = () => (
-  <div><FormattedMessage id="doc" /></div>
+  <div>
+    <div>
+      <span>hello world</span> hello
+    </div>
+    <div>
+      <p>hello world</p>
+    </div>
+    <div>
+      <span>hello world</span>
+    </div>
+    <p>
+      say: <span>hello world</span>
+    </p>
+  </div>
 )
 
 class App extends React.Component {
