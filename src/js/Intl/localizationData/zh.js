@@ -26,5 +26,7 @@ export default {
     itemHex: '十六进制/帧',
     itemStr: '字符串/帧',
     displayNone: '不显示',
+    scriptSend: '脚本发送',
+    append: '末尾加',
   },
 };

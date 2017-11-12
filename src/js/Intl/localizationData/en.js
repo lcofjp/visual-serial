@@ -26,5 +26,7 @@ export default {
     itemHex: 'hex/frame',
     itemStr: 'string/frame',
     displayNone: 'none',
+    scriptSend: 'script',
+    append: 'append',
   },
 };
