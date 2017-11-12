@@ -12,6 +12,8 @@ export default {
     refresh: 'refresh',
     open: 'open',
     close: 'close',
+    opening: 'opening',
+    closing: 'closing',
     send: 'send',
     hex: 'Hex',
     middleware: 'middleware',

@@ -12,6 +12,8 @@ export default {
     refresh: '刷新',
     open: '打开',
     close: '关闭',
+    opening: '打开中',
+    closing: '关闭中',
     send: '发送',
     hex: '十六进制',
     middleware: '中间件',

@@ -58,11 +58,6 @@ label {
   width: 49%;
 }
 
-#serial-widget {
-  display: grid;
-  grid-template-columns: 14.7rem 1fr;
-}
-
 .middleware-list hr {
   margin: 1px 0;
 }

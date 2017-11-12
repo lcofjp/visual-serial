@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import R from 'ramda';
 import { settingChangeAction, refreshDeviceAction } from './serialActions';
+import { handleSerialOpenClose } from './serial';
 
 const baudRates = [9600,115200,38400,57600,19200,110,300,1200,2400,4800,14400,230400,921600];
 const dataBits = [8,7,6,5];
@@ -19,29 +20,54 @@ class DeviceSetting extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      device: '',
-      databit: 8,
-      baudrate: 115200,
-      stopbit: 1,
-      parity: 'none',
-      flowcontrol: 'none',
       ...this.props.setting,
     }
     this.valueChange = this.valueChange.bind(this);
     this.refreshDevice = this.refreshDevice.bind(this);
+    this.openButtonClick = this.openButtonClick.bind(this);
   }
   componentDidMount() {
     this.props.dispatch(refreshDeviceAction());
+  }
+  componentWillReceiveProps(nextProps) {
+    const device = nextProps.setting.device;
+    // 如果device不在portList列表里面，则要更新device
+    if(nextProps.portList.length > 0 && (device === '' || nextProps.portList.indexOf(device) < 0)) {
+      this.props.dispatch(settingChangeAction({device: nextProps.portList[0]}));
+      return;
+    }
+    if (nextProps.portList.length === 0 && nextProps.setting.device !== '') {
+      this.props.dispatch(settingChangeAction({device: ''}));
+      return;
+    }
   }
   refreshDevice() {
     this.props.dispatch(refreshDeviceAction());
   }
   valueChange(e) {
     const field = e.target.dataset['name'];
-    this.setState({...this.state, [field]: e.target.value});
-    this.props.dispatch(settingChangeAction({...this.state, [field]: e.target.value}));
+    this.setState({[field]: e.target.value});
+    this.props.dispatch(settingChangeAction({[field]: e.target.value}));
+  }
+  openButtonClick() {
+    handleSerialOpenClose();
   }
   render() {
+    let buttonId;
+    switch(this.props.status) {
+      case 'opening':
+        buttonId = 'opening';
+        break;
+      case 'closing':
+        buttonId = 'closing';
+        break;
+      case 'opened':
+        buttonId = 'close';
+        break; 
+      default:
+        buttonId = 'open';
+        break;
+    }
     return (
       <div id="device-setting">
         <label><FormattedMessage id="device" />:</label>
@@ -74,8 +100,11 @@ class DeviceSetting extends React.Component {
           <button onClick={this.refreshDevice} className="btn btn-sm btn-primary">
             <FormattedMessage id="refresh" />
           </button>
-          <button className="btn btn-sm btn-primary">
-            <FormattedMessage id="open" />
+          <button 
+            className="btn btn-sm btn-primary" 
+            disabled={this.props.status === 'closing' || this.props.status === 'opening'}
+            onClick={ this.openButtonClick }>
+            <FormattedMessage id={buttonId} />
           </button>
         </div>
       </div>
@@ -84,6 +113,6 @@ class DeviceSetting extends React.Component {
 }
 
 function mapStateToProps(state) {
-  return {setting: state.serial.setting, portList: state.serial.portList};
+  return {setting: state.serial.setting, portList: state.serial.portList, status: state.serial.status};
 }
 export default connect(mapStateToProps)(DeviceSetting);

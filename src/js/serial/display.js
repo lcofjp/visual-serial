@@ -6,6 +6,7 @@ import DisplaySetting from './displaySetting';
 import {
   setDisplayMode
 } from './serialActions';
+import { printStore } from './serial';
 
 import './display.css';
 
@@ -16,7 +17,7 @@ class Display extends React.Component {
     this.setDisplayMode = this.setDisplayMode.bind(this);
   }
   clearContent() {
-
+    printStore();
   }
   setDisplayMode(e) {
     this.props.dispatch(setDisplayMode(e.target.value));

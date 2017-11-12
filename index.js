@@ -1,7 +1,7 @@
 import $ from 'jquery';
 import React from 'react';
 import ReactDOM from 'react-dom';
-
+import { FormattedMessage } from 'react-intl';
 import {
   HashRouter as Router,
   Route,
@@ -17,13 +17,15 @@ import IntlWrapper from './src/js/Intl/IntlWrapper';
 import NavBar from './src/js/navbar';
 
 import { configureStore } from './src/js/store';
-import { FormattedMessage } from 'react-intl';
+
 
 // Initialize store
 const store = configureStore(window.__INITIAL_STATE__);
+serialInit(store);
 
 import SerialWidget from './src/js/serial/serialWidget';
 import onWindowResize from './src/js/actions';
+import { serialInit } from './src/js/serial/serial';
 
 // Import Routes
 // import routes from './routes';
