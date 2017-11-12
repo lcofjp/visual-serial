@@ -1,7 +1,8 @@
 import { combineReducers } from 'redux';
 import {
   SETTINGCHANGE_ACTION,
-  SETPORTLIST_ACTION
+  SETPORTLIST_ACTION,
+  SETDISPLAYMODE_ACTION
 } from './serialActions';
 
 function serialSettingReducer(state={baudrate: 9600}, action) {
@@ -12,7 +13,7 @@ function serialSettingReducer(state={baudrate: 9600}, action) {
       return state;
   }
 }
-function portListReducer(state=['COM1', 'COM2', 'COM3'], action) {
+function portListReducer(state=[], action) {
   switch(action.type) {
     case SETPORTLIST_ACTION:
       return [...action.list];
@@ -21,7 +22,17 @@ function portListReducer(state=['COM1', 'COM2', 'COM3'], action) {
   }
 }
 
+function displayReducer(state={displayMode: 'rawHex'}, action) {
+  switch(action.type) {
+    case SETDISPLAYMODE_ACTION:
+      return {...state, displayMode: action.mode};
+    default:
+      return state;
+  }
+}
+
 export default combineReducers({
   setting: serialSettingReducer,
-  portList: portListReducer
+  portList: portListReducer,
+  display: displayReducer,
 });

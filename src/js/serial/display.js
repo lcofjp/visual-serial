@@ -3,11 +3,27 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import DisplaySetting from './displaySetting';
+import {
+  setDisplayMode
+} from './serialActions';
+
 import './display.css';
 
 class Display extends React.Component {
+  constructor(props) {
+    super(props);
+    this.clearContent = this.clearContent.bind(this);
+    this.setDisplayMode = this.setDisplayMode.bind(this);
+  }
+  clearContent() {
+
+  }
+  setDisplayMode(e) {
+    this.props.dispatch(setDisplayMode(e.target.value));
+    console.log(e.target.value);
+  }
   render() {
-    const displayElement = this.props.displayMode === 'raw' ? 
+    const displayElement = this.props.displayMode.slice(0,3) === 'raw' ? 
       <textarea></textarea> :
       <div style={{width: "100%", backgroundColor: '#DDFFDD'}}></div>;
     return (
@@ -15,11 +31,13 @@ class Display extends React.Component {
         <div id="display-area" style={{ height: this.props.height, flex: '1' }}>
           {displayElement}
         </div>
-        <DisplaySetting />
+        <DisplaySetting mode={this.props.displayMode}
+          onDisplayModeChange={this.setDisplayMode} onClearClick={this.clearContent} />
       </div>
     )
   }
 }
+
 Display.propTypes = {
   height: PropTypes.number.isRequired,
 };
@@ -29,6 +47,7 @@ function mapStateToProps(store) {
   const height = store.windowSize.height - 250;
   return {
     height,
+    ...store.serial.display,
   };
 }
 

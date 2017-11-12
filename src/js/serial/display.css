@@ -4,9 +4,20 @@
 
 #display-area {
   width: 100%;
-  overflow: auto;
+  padding: 2px;
+  overflow: hidden;
 }
 #display-area > * {
   height: 100%;
   width: 100%;
+  /* box-shadow: 3px 3px 3px gray; */
+  border: 1px solid gray;
+}
+
+#display-area > textarea:focus {
+  outline: none;
+}
+
+#display-area > textarea {
+  background-color: #DDFFDD;
 }

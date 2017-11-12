@@ -10,16 +10,10 @@ class NavBar extends React.Component {
   constructor(props) {
     super(props);
     this.handleSwitchLanguage = this.handleSwitchLanguage.bind(this);
-    this.handleChangeLocation = this.handleChangeLocation.bind(this);
-    this.state = {key: '0.1234567'};
   }
   handleSwitchLanguage(e) {
     const lang = e.target.value;
     this.props.dispatch(switchLanguage(lang));
-  }
-  handleChangeLocation(e) {
-    // this.setState({key: Math.random().toString()});
-    // this.forceUpdate();
   }
   render() {
     return (

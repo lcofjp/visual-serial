@@ -6,17 +6,15 @@ const DTR_ACTION = 'DTR_ACTION';
 export const SETTINGCHANGE_ACTION = 'SETTINGCHANGE_ACTION';
 export const SETPORTLIST_ACTION = 'SETPORTLIST_ACTION';
 
-const SCANPORT_ACTION = 'SCANPORT_ACTION';
-
-const SELECTPORT_ACTION = 'SELECTPORT_ACTION';
-export const SETBAUDRATE_ACTION = 'SETBAUDRATE_ACTION';
+// display
+export const SETDISPLAYMODE_ACTION = 'SETDISPLAYMODE_ACTION';
 
 
 export function settingChangeAction(setting) {
   return {
     type: SETTINGCHANGE_ACTION,
     setting
-  }
+  };
 }
 
 export function refreshDeviceAction() {
@@ -30,5 +28,12 @@ export function refreshDeviceAction() {
       console.log(ports);
       dispatch({type: SETPORTLIST_ACTION, list: names});
     });
-  }
+  };
+}
+
+export function setDisplayMode(mode) {
+  return {
+    type: SETDISPLAYMODE_ACTION,
+    mode
+  };
 }
