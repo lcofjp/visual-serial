@@ -1,7 +1,7 @@
 import $ from 'jquery';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Main from './src/js/serial/main';
+
 import {
   HashRouter as Router,
   Route,
@@ -56,7 +56,7 @@ const Docs = () => (
       say: <span>hello world</span>
     </p>
   </div>
-)
+);
 
 class App extends React.Component {
   render() {
@@ -82,7 +82,7 @@ $(() => {
     <App />,
     document.getElementById('root')
   );
-  window.addEventListener('resize', e=>{
+  window.addEventListener('resize', () => {
     store.dispatch(onWindowResize());
   });
   store.dispatch(onWindowResize());

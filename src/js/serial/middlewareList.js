@@ -19,5 +19,5 @@ class MiddlewareList extends React.Component {
 
 MiddlewareList.propTypes = {
   title: PropTypes.string.isRequired,
-}
+};
 export default MiddlewareList;

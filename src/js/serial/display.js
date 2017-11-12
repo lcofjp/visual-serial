@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import DisplaySetting from './displaySetting';
 import { connect } from 'react-redux';
+
+import DisplaySetting from './displaySetting';
 import './display.css';
 
 class Display extends React.Component {
@@ -10,8 +11,8 @@ class Display extends React.Component {
       <textarea></textarea> :
       <div style={{width: "100%", backgroundColor: '#DDFFDD'}}></div>;
     return (
-      <div className="display-wrapper">
-        <div id="display-area" style={{ height: this.props.height }}>
+      <div className="display-wrapper" style={{ display: 'flex', flexDirection: 'column' }}>
+        <div id="display-area" style={{ height: this.props.height, flex: '1' }}>
           {displayElement}
         </div>
         <DisplaySetting />
@@ -25,7 +26,7 @@ Display.propTypes = {
 
 // Retrieve data from store as props
 function mapStateToProps(store) {
-  const height = store.windowSize.height-250;
+  const height = store.windowSize.height - 250;
   return {
     height,
   };

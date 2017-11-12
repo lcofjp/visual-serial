@@ -1,4 +1,6 @@
 #serial-widget {
   width: 100%;
   flex: 1;
+  display: grid;
+  grid-template-columns: 14.7rem 1fr;
 }

@@ -5,7 +5,7 @@ import { FormattedMessage } from 'react-intl';
 class DisplaySetting extends React.Component {
   render() {
     return (
-      <div style={{display: 'flex'}}>
+      <div style={{ display: 'flex', alignItems: 'center' }}>
         <label>
           <FormattedMessage id="displayMode" />:
           <select>
@@ -16,11 +16,11 @@ class DisplaySetting extends React.Component {
             <option value="none"><FormattedMessage id="displayNone" /></option>
           </select>
         </label>
-        <button className="btn btn-sm btn-primary" style={{marginLeft: 'auto'}}>
-          <FormattedMessage id="clear"></FormattedMessage>
+        <button className="btn btn-sm btn-primary" style={{ marginLeft: 'auto', marginRight: '2px' }}>
+          <FormattedMessage id="clear" />
         </button>
       </div>
-    )
+    );
   }
 }
 export default DisplaySetting;

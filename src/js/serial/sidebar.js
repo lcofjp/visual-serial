@@ -13,7 +13,7 @@ class SideBar extends React.Component {
         <MiddlewareList title="post middleware" />
         <MiddlewareList title="send middleware" />
       </div>
-    )
+    );
   }
 }
 

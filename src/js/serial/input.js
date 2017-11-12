@@ -20,10 +20,10 @@ class Input extends React.Component {
           </div>
         </div>
         <div className="send-setting">
-          <label><input type="checkbox" />末尾加\r\n</label>
+          <label><input type="checkbox" /><FormattedMessage id="append" />\r\n</label>
           <label><input type="checkbox" /><FormattedMessage id="hex" /></label>
-          <div style={{display: "inline-block"}}>
-            <label><input type="checkbox" />脚本</label>
+          <div style={{ display: 'inline-block' }}>
+            <label><input type="checkbox" /><FormattedMessage id="scriptSend" /></label>
             <button>load</button>
             <button>start</button>
             <button>stop</button>
