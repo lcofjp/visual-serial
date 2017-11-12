@@ -8,7 +8,9 @@ class Input extends React.Component {
     return (
       <div className="input-widget">
         <div className="input">
-          <textarea></textarea>
+          <div>
+            <textarea />
+          </div>
           <div>
             <button className="btn btn-primary">
               <FormattedMessage id="send"></FormattedMessage>
@@ -22,14 +24,15 @@ class Input extends React.Component {
         <div className="send-setting">
           <label><input type="checkbox" /><FormattedMessage id="append" />\r\n</label>
           <label><input type="checkbox" /><FormattedMessage id="hex" /></label>
+          <label><input type="checkbox" />RTS</label>
+          <label><input type="checkbox" />DTR</label>
+          
           <div style={{ display: 'inline-block' }}>
             <label><input type="checkbox" /><FormattedMessage id="scriptSend" /></label>
             <button>load</button>
             <button>start</button>
             <button>stop</button>
           </div>
-          <label><input type="checkbox" />RTS</label>
-          <label><input type="checkbox" />DTR</label>
         </div>
       </div>);
   }

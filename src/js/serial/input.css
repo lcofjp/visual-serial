@@ -6,7 +6,10 @@
   display: grid;
   grid-template-columns: 1fr 100px;
 }
-
+.input textarea {
+  width: 100%;
+  height: 100%;
+}
 .input button {
   width: 100%;
   height: 100px;
