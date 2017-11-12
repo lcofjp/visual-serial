@@ -3,7 +3,7 @@ const path = require('path');
 var nodeExternals = require('webpack-node-externals');
 
 module.exports = {
-  devtool: 'hidden-source-map',
+  devtool: 'source-map',
 
   entry: {
     app: [
