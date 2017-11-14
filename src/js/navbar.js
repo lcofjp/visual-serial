@@ -28,7 +28,8 @@ class NavBar extends React.Component {
           <div style={{ marginLeft: 'auto', marginRight: '10px', alignSelf: 'center', display: 'inline-block' }} >
             <a onClick={ () => {require('electron').shell.openExternal('https://github.com/lcofjp/visual-serial');}}
               style={{marginRight: '10px', cursor: 'pointer' }}>
-              <img src="./assets/svg/mark-github.svg" style={{ width: '1em', height: '1em' }} alt="GitHub" />
+              GitHub
+              <img src="./assets/svg/mark-github.svg" style={{ width: '1em', height: '1em', marginBottom: '6px'}} alt="GitHub" />
             </a>
             <label style={{margin: 'auto'}}>Language:</label>
             <select onChange={this.handleSwitchLanguage.bind(this)} value={this.props.locale}>

@@ -6,7 +6,7 @@ import DisplaySetting from './displaySetting';
 import {
   setDisplayMode
 } from './serialActions';
-import { printStore } from './serial';
+import { printStore, mountDisplayElement } from './serial';
 
 import './display.css';
 
@@ -16,17 +16,19 @@ class Display extends React.Component {
     this.clearContent = this.clearContent.bind(this);
     this.setDisplayMode = this.setDisplayMode.bind(this);
   }
+  componentDidMount() {
+    mountDisplayElement();
+  }
   clearContent() {
     printStore();
   }
   setDisplayMode(e) {
     this.props.dispatch(setDisplayMode(e.target.value));
-    console.log(e.target.value);
   }
   render() {
     const displayElement = this.props.displayMode.slice(0,3) === 'raw' ? 
-      <textarea></textarea> :
-      <div style={{width: "100%", backgroundColor: '#DDFFDD'}}></div>;
+      <textarea id='text-output'></textarea> :
+      <div id='item-output' style={{width: "100%", backgroundColor: '#DDFFDD'}}></div>;
     return (
       <div className="display-wrapper" style={{ display: 'flex', flexDirection: 'column' }}>
         <div id="display-area" style={{ height: this.props.height, flex: '1' }}>

@@ -6,6 +6,7 @@
   width: 100%;
   padding: 2px;
   overflow: hidden;
+  font-family: monospace;
 }
 #display-area > * {
   height: 100%;
@@ -20,4 +21,14 @@
 
 #display-area > textarea {
   background-color: #DDFFDD;
+}
+
+#item-container {
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+#item-container > div {
+  border-bottom: 1px solid gray;
 }
