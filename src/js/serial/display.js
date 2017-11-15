@@ -3,10 +3,13 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import DisplaySetting from './displaySetting';
-import {
-  setDisplayMode
-} from './serialActions';
-import { printStore, mountDisplayElement, unmountDisplayElement } from './serial';
+import { setDisplayMode } from './serialActions';
+import { 
+  printStore, 
+  mountDisplayElement, 
+  unmountDisplayElement,
+  clearDisplay,
+ } from './serial';
 
 import './display.css';
 
@@ -34,7 +37,7 @@ class Display extends React.Component {
     unmountDisplayElement();
   }
   clearContent() {
-    printStore();
+    clearDisplay();
   }
   setDisplayMode(e) {
     this.props.dispatch(setDisplayMode(e.target.value));

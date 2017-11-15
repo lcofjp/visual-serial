@@ -80,7 +80,6 @@ function display(buf, serial, next) {
     itemList.scrollTop = itemList.scrollHeight;
   }
   else if (displayMode === 'none') {
-    
   }
 }
 export function unmountDisplayElement() {
@@ -104,6 +103,12 @@ export function mountDisplayElement(type, element) {
   else if (displayMode === 'itemHex' || displayMode === 'itemStr') {
     itemDisplayElement.appendChild(itemList);
   }
+}
+export function clearDisplay() {
+  rawHex = '';
+  rawStr = '';
+  if (textDisplayElement) textDisplayElement.value = '';
+  itemList.innerHTML = '';
 }
 
 export function serialInit(s) {
