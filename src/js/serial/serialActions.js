@@ -15,6 +15,9 @@ export const SETPORTLIST_ACTION = 'SETPORTLIST_ACTION';
 // display
 export const SETDISPLAYMODE_ACTION = 'SETDISPLAYMODE_ACTION';
 
+// middlewareModal
+export const MIDDLEWARE_MODAL_SHOW = 'MIDDLEWARE_MODAL_SHOW';
+
 
 export function settingChangeAction(setting) {
   return {
@@ -65,5 +68,12 @@ export function serialClosed() {
   return {
     type: SERIALCLOSED,
     status: 'closed'
+  }
+}
+
+export function middlewareModalShow(show) {
+  return {
+    type: MIDDLEWARE_MODAL_SHOW,
+    show,
   }
 }

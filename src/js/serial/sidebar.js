@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import DeviceSetting from './deviceSetting';
 import MiddlewareList from './middlewareList';
+import { printStore } from './serial';
 import './sidebar.css';
 
 class SideBar extends React.Component {
@@ -9,9 +10,10 @@ class SideBar extends React.Component {
     return (
       <div>
         <DeviceSetting />
-        <MiddlewareList title="pre middleware" />
-        <MiddlewareList title="post middleware" />
-        <MiddlewareList title="send middleware" />
+        <MiddlewareList titleId="preMiddleware" />
+        <MiddlewareList titleId="postMiddleware" />
+        <MiddlewareList titleId="sendMiddleware" />
+        <button onClick={()=>printStore()}>show store</button>
       </div>
     );
   }

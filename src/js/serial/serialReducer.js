@@ -8,6 +8,8 @@ import {
   SERIALCLOSING,
   SERIALOPENED,
   SERIALCLOSED,
+  //middlewareModal
+  MIDDLEWARE_MODAL_SHOW,
 } from './serialActions';
 
 const defaultSerialSetting = {
@@ -55,9 +57,19 @@ function displayReducer(state={displayMode: 'rawHex'}, action) {
   }
 }
 
+function middlewareModal(state={show: false}, action) {
+  switch(action.type) {
+    case MIDDLEWARE_MODAL_SHOW:
+      return {show: action.show};
+    default:
+      return state;
+  }
+}
+
 export default combineReducers({
   setting: serialSettingReducer,
   portList: portListReducer,
   display: displayReducer,
   status: serialStatusReducer,
+  middlewareModal,
 });

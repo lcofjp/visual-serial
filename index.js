@@ -8,13 +8,12 @@ import {
   Link
 } from 'react-router-dom';
 import { Redirect } from 'react-router';
-/**
- * Root Component
- */
 import { Provider } from 'react-redux';
+
 import IntlWrapper from './src/js/Intl/IntlWrapper';
 
 import NavBar from './src/js/navbar';
+import { importMiddleware } from './src/js/serial/middleware';
 
 import { configureStore } from './src/js/store';
 
@@ -88,4 +87,5 @@ $(() => {
     store.dispatch(onWindowResize());
   });
   store.dispatch(onWindowResize());
+  console.log(importMiddleware());
 });

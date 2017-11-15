@@ -1,6 +1,8 @@
 export default {
   locale: 'zh',
   messages: {
+    ok: '确定',
+    cancel: '取消',
     serial: '串口',
     doc: '文档',
     device: '设备',
@@ -30,5 +32,6 @@ export default {
     displayNone: '不显示',
     scriptSend: '脚本发送',
     append: '末尾加',
+    addMiddleware: '添加中间件',
   },
 };

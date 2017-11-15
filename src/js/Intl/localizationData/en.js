@@ -1,6 +1,8 @@
 export default {
   locale: 'en',
   messages: {
+    ok: 'OK',
+    cancel: 'Cancel',
     serial: 'Serial',
     doc: 'Docs',
     device: 'device',
@@ -30,5 +32,6 @@ export default {
     displayNone: 'none',
     scriptSend: 'script',
     append: 'append',
+    addMiddleware: 'Add Middleware',
   },
 };
