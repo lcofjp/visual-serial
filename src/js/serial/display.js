@@ -6,9 +6,20 @@ import DisplaySetting from './displaySetting';
 import {
   setDisplayMode
 } from './serialActions';
-import { printStore, mountDisplayElement } from './serial';
+import { printStore, mountDisplayElement, unmountDisplayElement } from './serial';
 
 import './display.css';
+
+class ItemDisplay extends React.Component {
+  render() {
+    return (<div ref={elm => mountDisplayElement('item', elm)} id='item-output' style={{width: "100%", backgroundColor: '#DDFFDD'}}></div>);
+  }
+}
+class TextDisplay extends React.Component {
+  render() {
+    return (<textarea ref={elm => mountDisplayElement('text', elm)} id='text-output'></textarea>);
+  }
+}
 
 class Display extends React.Component {
   constructor(props) {
@@ -17,7 +28,10 @@ class Display extends React.Component {
     this.setDisplayMode = this.setDisplayMode.bind(this);
   }
   componentDidMount() {
-    mountDisplayElement();
+    
+  }
+  componentWillUnmount() {
+    unmountDisplayElement();
   }
   clearContent() {
     printStore();
@@ -27,8 +41,7 @@ class Display extends React.Component {
   }
   render() {
     const displayElement = this.props.displayMode.slice(0,3) === 'raw' ? 
-      <textarea id='text-output'></textarea> :
-      <div id='item-output' style={{width: "100%", backgroundColor: '#DDFFDD'}}></div>;
+      <TextDisplay /> : <ItemDisplay />;
     return (
       <div className="display-wrapper" style={{ display: 'flex', flexDirection: 'column' }}>
         <div id="display-area" style={{ height: this.props.height, flex: '1' }}>

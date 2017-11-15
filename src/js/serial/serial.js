@@ -16,6 +16,9 @@ let displayMode;
 let rawHex = '';
 let rawStr = '';
 
+let textDisplayElement = null;
+let itemDisplayElement = null;
+
 const itemList = document.createElement('div');
 itemList.id = 'item-container';
 let itemCount = 0;
@@ -40,14 +43,20 @@ function display(buf, serial, next) {
     if (rawHex.length > MAX_TEXT_LENGTH) {
       rawHex = rawHex.slice(4096);
     }
-    $('#text-output').val(rawHex);
+    $(textDisplayElement).val(rawHex);
+    if (textDisplayElement){
+      textDisplayElement.scrollTop = textDisplayElement.scrollHeight;
+    }
   }
   else if (displayMode === 'rawStr') {
     rawStr += buf.toString('utf8');
     if (rawStr.length > MAX_TEXT_LENGTH) {
       rawStr = rawStr.slice(4096);
     }
-    $('#text-output').val(rawStr);
+    $(textDisplayElement).val(rawStr);
+    if (textDisplayElement){
+      textDisplayElement.scrollTop = textDisplayElement.scrollHeight;
+    }
   }
   else if (displayMode === 'itemHex' || displayMode === 'itemStr') {
     let text;
@@ -67,22 +76,33 @@ function display(buf, serial, next) {
     }
     div.innerText = text;
     itemList.appendChild(div);
-    $('#item-output').html(itemList);
+    $(itemDisplayElement).html(itemList);
     itemList.scrollTop = itemList.scrollHeight;
   }
   else if (displayMode === 'none') {
     
   }
 }
-export function mountDisplayElement() {
+export function unmountDisplayElement() {
+  itemDisplayElement = null;
+  textDisplayElement = null;
+}
+export function mountDisplayElement(type, element) {
+  if (element === null) return;
+  if (type === 'item') {
+    itemDisplayElement = element;
+  }
+  else {
+    textDisplayElement = element;
+  }
   if (displayMode === 'rawHex') {
-    $('#text-output').val(rawHex);
+    textDisplayElement.value = rawHex;
   }
   else if (displayMode === 'rawStr') {
-    $('#text-output').val(rawStr);
+    textDisplayElement.value = rawStr;
   }
   else if (displayMode === 'itemHex' || displayMode === 'itemStr') {
-    $('#item-output').html(itemList);
+    itemDisplayElement.appendChild(itemList);
   }
 }
 
