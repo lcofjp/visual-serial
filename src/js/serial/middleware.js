@@ -3,7 +3,7 @@ import path from 'path';
 import R from 'ramda';
 import _ from 'lodash';
 
-const middlewareFactoryMap = new Map();
+export const middlewareFactoryMap = new Map();
 
 // 扫描midlleware文件夹，返回其中的js文件和文件夹
 function scanMiddlewareDir(dirname) {

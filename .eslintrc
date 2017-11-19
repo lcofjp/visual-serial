@@ -32,7 +32,9 @@
     }],
     "react/jsx-no-bind": "off",
     "react/jsx-filename-extension": ["error", { "extensions": [".js", ".jsx"] }],
-    "react/prefer-stateless-function": "off"
+    "react/prefer-stateless-function": "off",
+    "react/no-multi-comp": "off",
+    "class-methods-use-this": "off"
   },
   "plugins": [
     "flowtype",

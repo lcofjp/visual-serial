@@ -25,7 +25,7 @@ function save2file() {
   function getOptions() {
     return [
       {
-        name: 'filepath', type: 'savefile', label: '选择文件路径', 
+        name: 'filepath', type: 'savefile', label: '选择文件保存路径', defaultFileName: 'record.bin',
       },
       {
         name: 'filetype', type: 'radio', label: '二进制', value: 'bin', checked: true,

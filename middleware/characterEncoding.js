@@ -22,7 +22,7 @@ const supportedEncodings = [
   'UTF8', 'UTF-16', 'UTF-16BE', 'ascii', 'hex', 'base64', 'binary',
   'GB2312', 'GBK', 'GB18030', 'Windows936', 'EUC-CN',
   'ISO-8859-1', 'ISO-8859-2',
-  'Big5', 'Big5-HKSCS', 'EUC-KR',
+  'Big5', 'Big5-HKSCS',
   'KS_C_5601', 'Windows949', 'EUC-KR',
   'Shift_JIS', 'Windows-31j', 'Windows932', 'EUC-JP',
 ];
@@ -43,10 +43,10 @@ function characterEncodeingConversion() {
   function getOptions() {
     return [
       {
-        name: 'from', label: '源编码', type: 'select', values: supportedEncodings
+        name: 'from', label: '源编码', type: 'select', options: supportedEncodings
       },
       {
-        name: 'to', label: '目标编码', type: 'select', values: supportedEncodings
+        name: 'to', label: '目标编码', type: 'select', options: supportedEncodings
       },
       {
         type: 'text', content: `<span style="color: red;">注意：</span>只有对一串完整的数据进行编码转换才有意义，对离散的字节单位是无法正确编解码的，

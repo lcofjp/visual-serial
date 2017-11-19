@@ -34,7 +34,7 @@ function TIMEOUT() {
     return [
       {
         name: 'timeoutValue', label: '超时时间(ms)', type: 'select', 
-        values: valuesList, 
+        options: valuesList, 
       },
     ];
   }

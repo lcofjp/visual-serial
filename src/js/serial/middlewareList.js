@@ -21,7 +21,7 @@ class MiddlewareList extends React.Component {
 }
 
 MiddlewareList.propTypes = {
-  title: PropTypes.string.isRequired,
+  titleId: PropTypes.string.isRequired,
 };
 
 export default connect()(MiddlewareList);

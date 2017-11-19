@@ -42,10 +42,11 @@
   margin-left: auto;
   margin-right: 10px;
 }
-#middleware-modal button {
+#middleware-modal .footer button {
   width: 5em;
 }
 
 #middleware-modal .content {
   flex: 1 1;
+  padding: 5px 10px;
 }
