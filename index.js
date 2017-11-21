@@ -79,6 +79,7 @@ class App extends React.Component {
 }
 
 $(() => {
+  console.log(importMiddleware());
   ReactDOM.render(
     <App />,
     document.getElementById('root')
@@ -87,5 +88,4 @@ $(() => {
     store.dispatch(onWindowResize());
   });
   store.dispatch(onWindowResize());
-  console.log(importMiddleware());
 });

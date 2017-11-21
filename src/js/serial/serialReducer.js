@@ -8,8 +8,11 @@ import {
   SERIALCLOSING,
   SERIALOPENED,
   SERIALCLOSED,
-  //middlewareModal
+  // middlewareModal
   MIDDLEWARE_MODAL_SHOW,
+  // add/remove middleware
+  ADD_MIDDLEWARE,
+  REMOVE_MIDDLEWARE,
 } from './serialActions';
 
 const defaultSerialSetting = {
@@ -66,10 +69,42 @@ function middlewareModal(state={show: false}, action) {
   }
 }
 
+const initialMiddlewareSet = {
+  preMiddleware: [],
+  postMiddleware: [],
+  sendMiddleware: [],
+}
+
+function middleware(state=initialMiddlewareSet, action) {
+  let dstList;
+  switch(action.type) {
+    case ADD_MIDDLEWARE:
+      dstList = state[action.whichList];
+      dstList.push(action.middlewareObject);
+      return {
+        ...state,
+        [action.whichList]: dstList,
+      }
+    case REMOVE_MIDDLEWARE:
+      dstList = state[action.whichList];
+      const index = dstList.indexOf(action.middlewareObject);
+      if (index >= 0) {
+        dstList.splice(index, 1);
+      }
+      return {
+        ...state,
+        [action.whichList]: dstList,
+      }
+    default:
+      return state;
+  }
+}
+
 export default combineReducers({
   setting: serialSettingReducer,
   portList: portListReducer,
   display: displayReducer,
   status: serialStatusReducer,
   middlewareModal,
+  middleware,
 });

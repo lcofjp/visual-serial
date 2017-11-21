@@ -18,6 +18,10 @@ export const SETDISPLAYMODE_ACTION = 'SETDISPLAYMODE_ACTION';
 // middlewareModal
 export const MIDDLEWARE_MODAL_SHOW = 'MIDDLEWARE_MODAL_SHOW';
 
+// middleware add/remove
+export const ADD_MIDDLEWARE = 'ADD_MIDDLEWARE';
+export const REMOVE_MIDDLEWARE = 'REMOVE_MIDDLEWARE';
+
 
 export function settingChangeAction(setting) {
   return {
@@ -75,5 +79,20 @@ export function middlewareModalShow(show) {
   return {
     type: MIDDLEWARE_MODAL_SHOW,
     show,
+  }
+}
+
+export function addMiddleware(whichList, middlewareObject) {
+  return {
+    type: ADD_MIDDLEWARE,
+    whichList,
+    middlewareObject,
+  }
+}
+export function removeMiddleware(whichList, middlewareObject) {
+  return {
+    type: REMOVE_MIDDLEWARE,
+    whichList,
+    middlewareObject,
   }
 }

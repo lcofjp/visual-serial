@@ -83,13 +83,20 @@ label {
   text-overflow: ellipsis;
 }
 .middleware-delete {
-  float: right;
   margin-right: 5px;
 }
-.middleware-delete:hover {
+.middleware-edit {
+  margin-right: 5px;
+  width: 0.8em;
+  height: 0.8em;
+}
+.middleware-delete:hover, .middleware-edit:hover {
   cursor: pointer;
 }
-
-.middleware-list img {
-  margin: 0 10px 5px;
+.middleware-operation {
+  float: right;
+  height: 100%;
+  display: flex;
+  align-items: center;
 }
+

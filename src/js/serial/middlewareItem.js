@@ -5,15 +5,20 @@ class MiddlewareItem extends React.Component {
   render() {
     return (
       <div className="middleware-item">
-        <span className="middleware-name">{this.props.mname}</span>
-        <span className="middleware-delete">&times;</span>
+        <span className="middleware-name">{this.props.dataName}</span>
+        <div className="middleware-operation">
+          <img src="./assets/svg/si-glyph-edit.svg" className="middleware-edit" ></img>
+          <span className="middleware-delete" onClick={() => this.props.onClick(this.props.dataObject)}>&times;</span>
+        </div>
       </div>
     )
   }
 }
 
 MiddlewareItem.propTypes = {
-  mname: PropTypes.string.isRequired,
+  dataName: PropTypes.string.isRequired,
+  dataObject: PropTypes.object.isRequired,
+  onClick: PropTypes.func.isRequired,
 };
 
 export default MiddlewareItem;

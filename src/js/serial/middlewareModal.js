@@ -3,7 +3,11 @@ import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import cuid from 'cuid';
 
-import { middlewareModalShow } from './serialActions';
+import {
+  middlewareModalShow,
+  addMiddleware,
+  removeMiddleware,
+} from './serialActions';
 import { middlewareFactoryMap } from './middleware';
 import {
   Selector,
@@ -19,23 +23,62 @@ class MiddlewareModal extends React.Component {
   constructor(props) {
     super(props);
     // 获取中间的名称，并设置select的option
-    const entries = middlewareFactoryMap.entries();
+    const keys = middlewareFactoryMap.keys();
     const namesComponent = [];
-    for(const entry of entries) {
-      // console.log(entry[0], entry[1]);
-      namesComponent.push(<option key={entry[0]} value={entry[0]}>{entry[0]}</option>);
+    let firstMiddlewareName = '';
+    for(const name of keys) {
+      if (firstMiddlewareName === '') firstMiddlewareName = name;
+      namesComponent.push(<option key={name} value={name}>{name}</option>);
     }
 
+    const middlewareObject = this.instanceByName(firstMiddlewareName);
+    const middlewareOptions = this.getOptionsOfInstance(middlewareObject);
     this.state = {
-      middlewareName: '',
+      middlewareName: firstMiddlewareName,
       nameOptions: namesComponent,
-      middlewareOptions: [],
-      middlewareInstance: null,
+      middlewareOptions,
+      middlewareObject: middlewareObject,
     };
     this.configInfo = {};
-    this.middlewareChange = this.middlewareChange.bind(this);
+    this.handleMiddlewareChange = this.handleMiddlewareChange.bind(this);
     this.handleOptionChange = this.handleOptionChange.bind(this);
+    this.submit = this.submit.bind(this);
   }
+
+  instanceByName(middlewareName) {
+    const middleware = middlewareFactoryMap.get(middlewareName);
+    const middlewareObject = {
+      name: middlewareName,
+      type: middleware.type,
+      cuid: cuid.slug(),
+      whichList: this.props.whichList,
+    };
+    if (middleware.type === 'protocol' || middleware.type === 'middleware') {
+      const middlewareInstance = new middleware.factory();
+      middlewareObject.instance = middlewareInstance;
+    } else {
+      middlewareObject.path = middleware.path;
+    }
+    return middlewareObject;
+  }
+
+  getOptionsOfInstance(obj) {
+    let middlewareOptions = [];
+    if (obj.instance && typeof obj.instance.getOptions === 'function') {
+      middlewareOptions = obj.instance.getOptions();
+    }
+    return middlewareOptions;
+  }
+
+  submit() {
+    const instance = this.state.middlewareObject.instance;
+    if (instance && typeof instance.config === 'function') {
+      instance.config(this.configInfo);
+    }
+    this.props.dispatch(addMiddleware(this.state.middlewareObject.whichList, this.state.middlewareObject));
+    this.props.dispatch(middlewareModalShow(false));
+  }
+
   handleOptionChange(name, op, val) {
     // op is one of set, add, remove, add/remove用于CheckBox, 其他用set
     switch(op) {
@@ -55,14 +98,6 @@ class MiddlewareModal extends React.Component {
         break;
     }
     // console.log(this.configInfo);
-  }
-  displayOptions(instance) {
-    if (typeof instance.getOptions === 'function') {
-      const options = instance.getOptions();
-      this.setState({ middlewareOptions: options });
-    } else {
-      this.setState({ middlewareOptions: [] });
-    }
   }
   constructOptionElements(cfgArr) {
     this.configInfo = cfgArr.reduce((acc, v) => {
@@ -115,18 +150,15 @@ class MiddlewareModal extends React.Component {
       }
     });
   }
-
-  middlewareChange(e) {
+  handleMiddlewareChange(e) {
     const middlewareName = e.target.value;
-    const middleware = middlewareFactoryMap.get(middlewareName);
-    this.setState({ middlewareName });
-    if (middleware.type === 'protocol' || middleware.type === 'middleware') {
-      const middlewareInstance = new middleware.factory();
-      this.setState({ middlewareInstance });
-      this.displayOptions(middlewareInstance);
-    } else {
-      this.setState({ middlewareOptions: [] });
-    }
+    const middlewareObject = this.instanceByName(middlewareName);
+    const middlewareOptions = this.getOptionsOfInstance(middlewareObject);
+    this.setState({
+      middlewareName,
+      middlewareObject,
+      middlewareOptions,
+    });
   }
   render() {
     return (
@@ -138,7 +170,7 @@ class MiddlewareModal extends React.Component {
           <div className="content">
             <div id="middleware-select">
               <label><FormattedMessage id="middleware" />:</label>
-              <select onChange={this.middlewareChange} value={this.state.middlewareName}>
+              <select onChange={this.handleMiddlewareChange} value={this.state.middlewareName}>
                 {this.state.nameOptions}
               </select>
             </div>
@@ -150,7 +182,7 @@ class MiddlewareModal extends React.Component {
             <button onClick={() => this.props.dispatch(middlewareModalShow(false))} className="btn btn-sm btn-default cancel">
               <FormattedMessage id="cancel" />
             </button>
-            <button className="btn btn-sm btn-primary ok">
+            <button onClick={this.submit} className="btn btn-sm btn-primary ok">
               <FormattedMessage id="ok" />
             </button>
           </div>
@@ -160,4 +192,9 @@ class MiddlewareModal extends React.Component {
   }
 }
 
-export default connect()(MiddlewareModal);
+function mapStateToProps(state) {
+  return {
+    whichList: state.serial.middlewareModal.show,
+  }
+}
+export default connect(mapStateToProps)(MiddlewareModal);

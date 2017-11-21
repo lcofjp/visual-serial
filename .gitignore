@@ -9,6 +9,7 @@ dll
 app
 test
 *.map
+*.bin
 webpack.config.*
 !webpack.config.js
 main.html
