@@ -64,9 +64,9 @@ label {
 
 .middleware-list {
   margin: 20px 10px;
-  border: 1px gray solid;
-  border-radius: 6px;
-  box-shadow: 2px 3px 4px gray;
+  border: 1px solid #ddd;
+  /* border-radius: 6px; */
+  box-shadow: 2px 2px 2px gray;
   overflow: hidden;
 }
 .middleware-title {
