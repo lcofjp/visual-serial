@@ -14,8 +14,7 @@ module.exports = {
   externals: [nodeExternals()],
   output: {
     path: __dirname,
-    filename: 'index.out.js',
-    libraryTarget: 'commonjs2'
+    filename: 'index.out.js'
   },
   module: {
     rules: [
