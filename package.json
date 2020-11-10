@@ -20,12 +20,12 @@
   },
   "homepage": "https://github.com/lcofjp/visual-serial#readme",
   "devDependencies": {
-    "electron": "^9.0.0",
+    "electron": "^10.1.5",
     "electron-rebuild": "^1.11.0"
   },
   "dependencies": {
     "serialport": "^9.0.0",
-    "vue": "^2.6.11",
-    "vuex": "^3.4.0"
+    "vue": "^2.6.12",
+    "vuex": "^3.5.1"
   }
 }
