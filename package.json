@@ -20,7 +20,7 @@
   },
   "homepage": "https://github.com/lcofjp/visual-serial#readme",
   "devDependencies": {
-    "electron": "^10.1.5",
+    "electron": "^13.6.6",
     "electron-rebuild": "^1.11.0"
   },
   "dependencies": {
